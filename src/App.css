@@ -7,10 +7,13 @@
   background: linear-gradient(to bottom, #1a1a2e, #16213e);
   color: white;
   font-family: 'Press Start 2P', cursive;
+  position: relative;
+  overflow: hidden;
 }
 
 .hud {
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -50,7 +53,8 @@
 }
 
 .game {
-  width: 600px;
+  width: 100%;
+  max-width: 600px;
   height: 200px;
   border: 3px solid #4ecca3;
   border-radius: 10px;
@@ -144,6 +148,54 @@
   color: #4ecca3;
 }
 
+/* Mobile Controls */
+.mobile-controls {
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 10px;
+  z-index: 10;
+}
+
+.control-btn {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(78, 204, 163, 0.7);
+  color: white;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.control-btn:active {
+  transform: scale(0.95);
+  background: rgba(78, 204, 163, 0.9);
+}
+
+.control-btn:disabled {
+  opacity: 0.5;
+  transform: none;
+}
+
+.jump-btn {
+  background: rgba(78, 204, 163, 0.7);
+}
+
+.eat-btn {
+  background: rgba(69, 179, 146, 0.7);
+}
+
 @keyframes jump {
   0%, 100% { bottom: 0; }
   50% { bottom: 80px; }
@@ -157,4 +209,37 @@
 @keyframes twinkle {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .game {
+    height: 150px;
+  }
+  
+  .dino {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .grass {
+    width: 25px;
+    height: 35px;
+  }
+  
+  .instructions {
+    display: none;
+  }
+  
+  .hud {
+    padding: 10px;
+  }
+  
+  .score {
+    font-size: 16px;
+  }
+  
+  .health-bar {
+    width: 150px;
+  }
 } 

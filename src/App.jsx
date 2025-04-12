@@ -11,9 +11,24 @@ function App() {
   const [grassPosition, setGrassPosition] = useState(600)
   const [clouds, setClouds] = useState([])
   const [stars, setStars] = useState([])
+  const [isMobile, setIsMobile] = useState(false)
   const gameSpeed = useRef(6)
   const grassInterval = useRef(null)
   const cloudInterval = useRef(null)
+
+  // Check if device is mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => {
+      window.removeEventListener('resize', checkMobile)
+    }
+  }, [])
 
   const jump = useCallback(() => {
     if (!isJumping && !gameOver) {
@@ -194,6 +209,26 @@ function App() {
         <p>Space - Jump</p>
         <p>E - Eat Grass</p>
       </div>
+      
+      {/* Mobile Controls */}
+      {isMobile && (
+        <div className="mobile-controls">
+          <button 
+            className="control-btn jump-btn"
+            onClick={jump}
+            disabled={isJumping || gameOver}
+          >
+            Jump
+          </button>
+          <button 
+            className="control-btn eat-btn"
+            onClick={eat}
+            disabled={isJumping || gameOver}
+          >
+            Eat
+          </button>
+        </div>
+      )}
     </div>
   )
 }
