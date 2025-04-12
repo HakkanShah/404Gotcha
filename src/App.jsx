@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import './App.css'
 
 function App() {
-  const [dinoPosition, setDinoPosition] = useState(100)
+  const [dinoPosition, setDinoPosition] = useState(0)
   const [isJumping, setIsJumping] = useState(false)
   const [gameOver, setGameOver] = useState(false)
   const [score, setScore] = useState(0)
@@ -18,9 +18,9 @@ function App() {
   const jump = useCallback(() => {
     if (!isJumping && !gameOver) {
       setIsJumping(true)
-      setDinoPosition(20)
+      setDinoPosition(80)
       setTimeout(() => {
-        setDinoPosition(100)
+        setDinoPosition(0)
         setIsJumping(false)
       }, 500)
     }

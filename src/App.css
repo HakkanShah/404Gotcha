@@ -68,6 +68,7 @@
   left: 50px;
   border-radius: 10px;
   transition: bottom 0.5s;
+  z-index: 2;
 }
 
 .dino.jump {
@@ -85,6 +86,7 @@
   position: absolute;
   bottom: 20px;
   border-radius: 5px;
+  z-index: 1;
 }
 
 .ground {
@@ -94,6 +96,7 @@
   position: absolute;
   bottom: 0;
   border-radius: 10px 10px 0 0;
+  z-index: 0;
 }
 
 .cloud {
@@ -103,6 +106,7 @@
   position: absolute;
   top: 30px;
   border-radius: 10px;
+  z-index: 1;
 }
 
 .star {
@@ -112,6 +116,7 @@
   position: absolute;
   border-radius: 50%;
   animation: twinkle 1s infinite;
+  z-index: 1;
 }
 
 .game-over {
@@ -124,6 +129,7 @@
   border-radius: 10px;
   text-align: center;
   border: 2px solid #4ecca3;
+  z-index: 3;
 }
 
 .game-over h2 {
@@ -139,8 +145,8 @@
 }
 
 @keyframes jump {
-  0%, 100% { bottom: 100px; }
-  50% { bottom: 20px; }
+  0%, 100% { bottom: 0; }
+  50% { bottom: 80px; }
 }
 
 @keyframes eat {
