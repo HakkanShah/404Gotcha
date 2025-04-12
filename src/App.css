@@ -11,6 +11,82 @@
   overflow: hidden;
 }
 
+.game {
+  width: 600px;
+  height: 200px;
+  border: 2px solid #4ecca3;
+  margin: 20px auto;
+  position: relative;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 20px rgba(78, 204, 163, 0.3);
+}
+
+.dino {
+  width: 50px;
+  height: 50px;
+  background: #4ecca3;
+  position: absolute;
+  bottom: 0;
+  left: 50px;
+  transition: bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dino-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.dino.jump {
+  animation: jump 0.5s linear;
+}
+
+.dino.eat {
+  animation: eat 0.3s ease-in-out;
+}
+
+.grass {
+  width: 40px;
+  height: 40px;
+  background: #45b392;
+  position: absolute;
+  bottom: 0;
+  transition: left 0.02s linear;
+}
+
+.grass-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ground {
+  width: 100%;
+  height: 20px;
+  background: #4ecca3;
+  position: absolute;
+  bottom: 0;
+}
+
+.cloud {
+  width: 60px;
+  height: 30px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 20px;
+  position: absolute;
+  top: 20px;
+}
+
+.star {
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  animation: twinkle 1s infinite;
+}
+
 .hud {
   width: 100%;
   max-width: 600px;
@@ -57,91 +133,15 @@
   height: 40px;
   border-radius: 50%;
   border: none;
-  background: rgba(78, 204, 163, 0.7);
+  background: rgba(255, 255, 255, 0.2);
   color: white;
-  font-size: 20px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   cursor: pointer;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
   transition: all 0.2s;
 }
 
 .mute-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
   transform: scale(1.1);
-  background: rgba(78, 204, 163, 0.9);
-}
-
-.game {
-  width: 100%;
-  max-width: 600px;
-  height: 200px;
-  border: 3px solid #4ecca3;
-  border-radius: 10px;
-  position: relative;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.1);
-  box-shadow: 0 0 20px rgba(78, 204, 163, 0.3);
-}
-
-.dino {
-  width: 50px;
-  height: 50px;
-  background: #4ecca3;
-  position: absolute;
-  left: 50px;
-  border-radius: 10px;
-  transition: bottom 0.5s;
-  z-index: 2;
-}
-
-.dino.jump {
-  animation: jump 0.5s linear;
-}
-
-.dino.eat {
-  animation: eat 0.3s linear;
-}
-
-.grass {
-  width: 30px;
-  height: 40px;
-  background: linear-gradient(to top, #45b392, #4ecca3);
-  position: absolute;
-  bottom: 20px;
-  border-radius: 5px;
-  z-index: 1;
-}
-
-.ground {
-  width: 100%;
-  height: 20px;
-  background: #4ecca3;
-  position: absolute;
-  bottom: 0;
-  border-radius: 10px 10px 0 0;
-  z-index: 0;
-}
-
-.cloud {
-  width: 60px;
-  height: 20px;
-  background: rgba(255, 255, 255, 0.8);
-  position: absolute;
-  top: 30px;
-  border-radius: 10px;
-  z-index: 1;
-}
-
-.star {
-  width: 4px;
-  height: 4px;
-  background: white;
-  position: absolute;
-  border-radius: 50%;
-  animation: twinkle 1s infinite;
-  z-index: 1;
 }
 
 .game-over {
@@ -149,23 +149,23 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(26, 26, 46, 0.9);
+  background: rgba(0, 0, 0, 0.8);
   padding: 20px;
   border-radius: 10px;
   text-align: center;
   border: 2px solid #4ecca3;
-  z-index: 3;
-}
-
-.game-over h2 {
-  color: #4ecca3;
-  margin-bottom: 10px;
 }
 
 .instructions {
-  margin-top: 20px;
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 10px;
   text-align: center;
-  font-size: 14px;
+  font-size: 12px;
   color: #4ecca3;
 }
 
@@ -179,7 +179,6 @@
   justify-content: center;
   gap: 20px;
   padding: 10px;
-  z-index: 10;
 }
 
 .control-btn {
@@ -187,26 +186,21 @@
   height: 80px;
   border-radius: 50%;
   border: none;
-  background: rgba(78, 204, 163, 0.7);
+  background: rgba(78, 204, 163, 0.3);
   color: white;
-  font-family: 'Press Start 2P', cursive;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-size: 16px;
+  cursor: pointer;
   transition: all 0.2s;
-  -webkit-tap-highlight-color: transparent;
 }
 
 .control-btn:active {
   transform: scale(0.95);
-  background: rgba(78, 204, 163, 0.9);
+  background: rgba(78, 204, 163, 0.5);
 }
 
 .control-btn:disabled {
   opacity: 0.5;
-  transform: none;
+  cursor: not-allowed;
 }
 
 .jump-btn {
@@ -224,23 +218,27 @@
 }
 
 @keyframes jump {
-  0%, 100% { bottom: 0; }
+  0% { bottom: 0; }
   50% { bottom: 80px; }
+  100% { bottom: 0; }
 }
 
 @keyframes eat {
-  0%, 100% { transform: scale(1); }
+  0% { transform: scale(1); }
   50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
 }
 
 @keyframes twinkle {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
+  0% { opacity: 0.2; }
+  50% { opacity: 1; }
+  100% { opacity: 0.2; }
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .game {
+    width: 100%;
     height: 150px;
   }
   
@@ -250,23 +248,11 @@
   }
   
   .grass {
-    width: 25px;
-    height: 35px;
+    width: 30px;
+    height: 30px;
   }
   
   .instructions {
     display: none;
-  }
-  
-  .hud {
-    padding: 10px;
-  }
-  
-  .score {
-    font-size: 16px;
-  }
-  
-  .health-bar {
-    width: 150px;
   }
 } 
