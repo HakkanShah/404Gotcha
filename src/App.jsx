@@ -12,9 +12,16 @@ function App() {
   const [clouds, setClouds] = useState([])
   const [stars, setStars] = useState([])
   const [isMobile, setIsMobile] = useState(false)
+  const [isMuted, setIsMuted] = useState(false)
   const gameSpeed = useRef(6)
   const grassInterval = useRef(null)
   const cloudInterval = useRef(null)
+  
+  // Sound effects
+  const jumpSound = useRef(new Audio('/sounds/jump.mp3'))
+  const eatSound = useRef(new Audio('/sounds/eat.mp3'))
+  const gameOverSound = useRef(new Audio('/sounds/gameover.mp3'))
+  const backgroundMusic = useRef(new Audio('/sounds/background.mp3'))
 
   // Check if device is mobile
   useEffect(() => {
@@ -30,10 +37,50 @@ function App() {
     }
   }, [])
 
+  // Initialize background music
+  useEffect(() => {
+    backgroundMusic.current.loop = true
+    backgroundMusic.current.volume = 0.3
+    
+    // Start background music on first user interaction
+    const startMusic = () => {
+      if (!isMuted) {
+        backgroundMusic.current.play().catch(err => console.log('Audio play failed:', err))
+      }
+      document.removeEventListener('click', startMusic)
+      document.removeEventListener('keydown', startMusic)
+    }
+    
+    document.addEventListener('click', startMusic)
+    document.addEventListener('keydown', startMusic)
+    
+    return () => {
+      document.removeEventListener('click', startMusic)
+      document.removeEventListener('keydown', startMusic)
+    }
+  }, [isMuted])
+
+  const playSound = (sound) => {
+    if (!isMuted) {
+      sound.current.currentTime = 0
+      sound.current.play().catch(err => console.log('Audio play failed:', err))
+    }
+  }
+
+  const toggleMute = () => {
+    setIsMuted(!isMuted)
+    if (!isMuted) {
+      backgroundMusic.current.pause()
+    } else {
+      backgroundMusic.current.play().catch(err => console.log('Audio play failed:', err))
+    }
+  }
+
   const jump = useCallback(() => {
     if (!isJumping && !gameOver) {
       setIsJumping(true)
       setDinoPosition(80)
+      playSound(jumpSound)
       setTimeout(() => {
         setDinoPosition(0)
         setIsJumping(false)
@@ -44,6 +91,7 @@ function App() {
   const eat = useCallback(() => {
     if (!isJumping && !gameOver) {
       setIsEating(true)
+      playSound(eatSound)
       setTimeout(() => {
         setIsEating(false)
       }, 300)
@@ -62,6 +110,9 @@ function App() {
       if (event.code === 'KeyE') {
         eat()
       }
+      if (event.code === 'KeyM') {
+        toggleMute()
+      }
     }
 
     document.addEventListener('keydown', handleKeyPress)
@@ -76,6 +127,9 @@ function App() {
     setClouds([])
     setStars([])
     gameSpeed.current = 6
+    if (!isMuted) {
+      backgroundMusic.current.play().catch(err => console.log('Audio play failed:', err))
+    }
   }
 
   useEffect(() => {
@@ -101,6 +155,8 @@ function App() {
         // Game over if health is 0
         if (health <= 0) {
           setGameOver(true)
+          playSound(gameOverSound)
+          backgroundMusic.current.pause()
         }
 
         // Increase score
@@ -169,6 +225,12 @@ function App() {
           />
           <span>Health: {Math.round(health)}%</span>
         </div>
+        <button 
+          className="mute-btn"
+          onClick={toggleMute}
+        >
+          {isMuted ? '🔇' : '🔊'}
+        </button>
       </div>
       <div className="game">
         {stars.map(star => (
@@ -208,6 +270,7 @@ function App() {
       <div className="instructions">
         <p>Space - Jump</p>
         <p>E - Eat Grass</p>
+        <p>M - Toggle Sound</p>
       </div>
       
       {/* Mobile Controls */}
@@ -226,6 +289,12 @@ function App() {
             disabled={isJumping || gameOver}
           >
             Eat
+          </button>
+          <button 
+            className="control-btn mute-btn"
+            onClick={toggleMute}
+          >
+            {isMuted ? '🔇' : '🔊'}
           </button>
         </div>
       )}
