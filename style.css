@@ -182,8 +182,8 @@
     }
     
     .dino {
-        width: 35px;
-        height: 38px;
+        width: 45px;
+        height: 50px;
     }
     
     .cactus {
@@ -194,4 +194,4 @@
     .instructions {
         display: none;
     }
-} 
+}
