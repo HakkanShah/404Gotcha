@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dino Runner Game</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <div class="game-container">
@@ -19,7 +19,7 @@
         
         <div class="game">
             <div class="dino" id="dino">
-                <img src="static/images/trex.png" alt="T-Rex" class="dino-img">
+                <img src="{{ url_for('static', filename='images/trex.png') }}" alt="T-Rex" class="dino-img">
             </div>
             <div class="ground"></div>
         </div>
@@ -34,6 +34,6 @@
         </div>
     </div>
 
-    <script src="static/js/game.js"></script>
+    <script src="{{ url_for('static', filename='js/game.js') }}"></script>
 </body>
-</html> 
+</html>
