@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dino Runner Game</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <title>Chrome Dino Runner</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="game-container">
         <div class="hud">
-            <div class="score">Score: <span id="score">0</span></div>
+            <div class="score">HI <span id="high-score">0</span>  <span id="score">0</span></div>
             <div class="health-bar">
                 <div class="health-fill" id="health-fill"></div>
                 <span id="health-text">100%</span>
@@ -19,7 +20,7 @@
         
         <div class="game">
             <div class="dino" id="dino">
-                <img src="static/images/trex.png" alt="T-Rex" class="dino-img">
+                <img src="https://freesvg.org/1549652339" alt="T-Rex" class="dino-img">
             </div>
             <div class="ground"></div>
         </div>
@@ -34,6 +35,6 @@
         </div>
     </div>
 
-    <script src="static/js/game.js"></script>
+    <script src="game.js"></script>
 </body>
-</html> 
+</html>
