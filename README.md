@@ -68,7 +68,3 @@ License
 This project is open source and available under the MIT License.
 
 
----
-
-Want a GenZ-style or meme-themed version instead? Just say the word, bro.
-
