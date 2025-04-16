@@ -18,7 +18,7 @@ Dino eats grass instead of jumping
 Easy to customize and extend
 
 
-Technologies Used
+## Technologies Used
 
 HTML5
 
@@ -27,7 +27,7 @@ CSS3
 JavaScript
 
 
-How to Run Locally
+## How to Run Locally
 
 1. Clone the repository:
 
