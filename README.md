@@ -40,15 +40,8 @@ git clone https://github.com/HakkanShah/Ghaas-Khane-Wala-Dino.git
 
 That’s it — no build tools or installations required!
 
-File Structure
 
-Ghaas-Khane-Wala-Dino/
-├── index.html
-├── style.css
-├── script.js
-└── assets/         # (if images or sounds are added later)
-
-Contribution
+## Contribution
 
 Feel free to fork the repo, make improvements, or even add new features like:
 
@@ -57,10 +50,4 @@ Score tracking
 Sound effects
 
 Power-ups or obstacles
-
-
-License
-
-This project is open source and available under the MIT License.
-
 
