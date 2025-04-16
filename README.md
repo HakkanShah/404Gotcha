@@ -18,10 +18,6 @@ Dino eats grass instead of jumping
 Easy to customize and extend
 
 
-Screenshots
-
-(Add screenshots here if available)
-
 Technologies Used
 
 HTML5
