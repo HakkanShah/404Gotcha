@@ -1,5 +1,5 @@
 
-Ghaas Khane Wala Dino
+# Ghaas Khane Wala Dino
 
 A fun and quirky spin on the classic Chrome Dino Game — Ghaas Khane Wala Dino is a lightweight HTML, CSS, and JavaScript game where the dino munches on grass instead of jumping over cacti!
 
