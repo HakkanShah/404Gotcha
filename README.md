@@ -5,7 +5,8 @@ A fun and quirky spin on the classic Chrome Dino Game — Ghaas Khane Wala Dino 
 
 ## Demo
 
-Play the Game Here
+Play the Game Here:
+https://hakkanshah.github.io/Ghaas-Khane-Wala-Dino/
 
 ## Features
 
