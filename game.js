@@ -91,7 +91,7 @@ class Game {
                 position -= this.gameSpeed;
                 cactus.style.left = position + 'px';
                 
-                // Check collision
+              
                 this.checkCollision(cactus);
             }
         }, 20);
