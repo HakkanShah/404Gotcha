@@ -168,7 +168,6 @@ class Game {
     }
 }
 
-// Start game when page loads
 window.onload = () => {
     new Game();
 }; 
