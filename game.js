@@ -19,7 +19,7 @@ class Game {
     }
 
     init() {
-        // Load high score
+        
         this.highScore = localStorage.getItem('highScore') || 0;
         this.highScoreElement.textContent = this.highScore;
         
