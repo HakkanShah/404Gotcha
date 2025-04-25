@@ -28,10 +28,10 @@ class Game {
         document.getElementById('jump-btn').addEventListener('click', () => this.jump());
         document.getElementById('eat-btn').addEventListener('click', () => this.eat());
         
-        // Start spawning cactus
+        
         this.startCactusSpawn();
         
-        // Start score increment
+        
         setInterval(() => this.incrementScore(), 100);
     }
 
