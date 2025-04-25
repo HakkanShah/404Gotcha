@@ -23,7 +23,7 @@ class Game {
         this.highScore = localStorage.getItem('highScore') || 0;
         this.highScoreElement.textContent = this.highScore;
         
-        // Event listeners
+        
         document.addEventListener('keydown', this.handleKeyPress.bind(this));
         document.getElementById('jump-btn').addEventListener('click', () => this.jump());
         document.getElementById('eat-btn').addEventListener('click', () => this.eat());
