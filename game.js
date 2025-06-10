@@ -17,7 +17,6 @@ class Game {
         
         this.init();
     }
-
     init() {
         
         this.highScore = localStorage.getItem('highScore') || 0;
