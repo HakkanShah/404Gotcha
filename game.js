@@ -14,7 +14,7 @@ class Game {
         this.gameSpeed = 5;
         this.cactusSpawnTime = 2000;
         this.isGameOver = false;
-   
+  
         this.init();
     }
     init() {
