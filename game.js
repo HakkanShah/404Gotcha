@@ -28,7 +28,7 @@ class Game {
         
         
         this.startCactusSpawn();
-       
+      
       
         setInterval(() => this.incrementScore(), 100);
     }
