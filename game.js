@@ -67,7 +67,6 @@ class Game {
             }, 300);
         }
     }
-
     spawnCactus() {
         const cactus = document.createElement('div');
         cactus.classList.add('cactus');
