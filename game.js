@@ -152,7 +152,7 @@ class Game {
         
         document.querySelector('.game').appendChild(gameOver);
         
-        
+       
         const restartHandler = (event) => {
             if (event.code === 'Space') {
                 document.removeEventListener('keydown', restartHandler);
