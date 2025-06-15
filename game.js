@@ -54,7 +54,6 @@ class Game {
             }, 500);
         }
     }
-
     eat() {
         if (!this.isEating && !this.isGameOver) {
             this.isEating = true;
