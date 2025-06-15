@@ -130,7 +130,6 @@ class Game {
             localStorage.setItem('highScore', this.highScore);
         }
     }
-
     startCactusSpawn() {
         this.cactusInterval = setInterval(() => this.spawnCactus(), this.cactusSpawnTime);
     }
