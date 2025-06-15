@@ -159,7 +159,7 @@ class Game {
                 location.reload();
             }
         };
-        
+       
         document.addEventListener('keydown', restartHandler);
     }
 }
