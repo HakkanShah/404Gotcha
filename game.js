@@ -88,7 +88,7 @@ class Game {
                 cactus.style.left = position + 'px';
                 
              
-                this.checkCollision(cactus);
+               this.checkCollision(cactus);
             }
         }, 20);
     }
