@@ -49,7 +49,7 @@ class Game {
             this.dino.classList.add('jump');
             
             setTimeout(() => {
-                this.dino.classList.remove('jump');
+               this.dino.classList.remove('jump');
                 this.isJumping = false;
             }, 500);
         }
