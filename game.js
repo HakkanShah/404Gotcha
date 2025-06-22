@@ -25,7 +25,7 @@ class Game {
     document.addEventListener('keydown', this.handleKeyPress.bind(this));
         document.getElementById('jump-btn').addEventListener('click', () => this.jump());
         document.getElementById('eat-btn').addEventListener('click', () => this.eat());
-        
+       
     
         this.startCactusSpawn();
       
