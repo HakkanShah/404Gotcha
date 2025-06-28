@@ -137,7 +137,7 @@ class Game {
         this.isGameOver = true;
         clearInterval(this.cactusInterval);
         
-        
+       
         const gameOver = document.createElement('div');
         gameOver.style.position = 'absolute';
         gameOver.style.top = '50%';
