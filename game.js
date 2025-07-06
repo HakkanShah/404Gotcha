@@ -95,7 +95,7 @@ class Game {
     checkCollision(cactus) {
         const dinoRect = this.dino.getBoundingClientRect();
         const cactusRect = cactus.getBoundingClientRect();
-        
+       
         if (
             dinoRect.right > cactusRect.left &&
             dinoRect.left < cactusRect.right &&
