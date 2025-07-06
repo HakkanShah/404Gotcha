@@ -122,7 +122,7 @@ class Game {
         this.score++;
         this.scoreElement.textContent = this.score;
        
-        
+       
         if (this.score > this.highScore) {
             this.highScore = this.score;
             this.highScoreElement.textContent = this.highScore;
