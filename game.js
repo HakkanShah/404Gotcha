@@ -158,7 +158,7 @@ class Game {
             }
         };
        
-        document.addEventListener('keydown', restartHandler);
+       document.addEventListener('keydown', restartHandler);
     }
 }
 
