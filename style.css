@@ -1,0 +1,126 @@
+body {
+    background-color: #1a1a1a;
+    color: #e0e0e0;
+    font-family: 'Orbitron', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    text-align: center;
+    background-color: #2a2a2a;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.2);
+}
+
+h1 {
+    color: #00ffff;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 10px;
+    animation: glow 1.5s ease-in-out infinite alternate;
+}
+
+.ui-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 0 20px;
+}
+
+.score-card {
+    background: #333;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: 2px solid;
+    width: 200px;
+}
+
+.score-card.snake1 {
+    border-color: #4caf50;
+}
+
+.score-card.snake2 {
+    border-color: #2196F3;
+}
+
+.score-card h2 {
+    margin: 0 0 10px;
+    font-size: 1.2em;
+}
+
+.score-card.snake1 h2 {
+    color: #4caf50;
+}
+
+.score-card.snake2 h2 {
+    color: #2196F3;
+}
+
+.status-panel {
+    flex-grow: 1;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: #ffeb3b;
+}
+
+#game-canvas {
+    background-color: #000;
+    border: 3px solid #00ffff;
+    border-radius: 5px;
+    box-shadow: inset 0 0 10px #00ffff;
+}
+
+.controls-panel {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.controls-panel label {
+    font-size: 1em;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 150px;
+    height: 7px;
+    background: #555;
+    outline: none;
+    border-radius: 5px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: #00ffff;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #1a1a1a;
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+
+@keyframes glow {
+    from {
+        text-shadow: 0 0 5px #00ffff, 0 0 10px #00ffff, 0 0 15px #00ffff;
+    }
+    to {
+        text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+    }
+  }
