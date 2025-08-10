@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>AI Snake Battle</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
@@ -10,27 +10,42 @@
 <body>
     <div class="container">
         <h1>AI Snake Battle</h1>
-        <div class="ui-panel">
-            <div class="score-card snake1">
-                <h2>Green Snake</h2>
-                <div>Score: <span id="score1">0</span></div>
-                <div>Length: <span id="length1">5</span></div>
-            </div>
-            <div class="status-panel">
-                <div id="winner-display"></div>
-            </div>
-            <div class="score-card snake2">
-                <h2>Blue Snake</h2>
-                <div>Score: <span id="score2">0</span></div>
-                <div>Length: <span id="length2">5</span></div>
-            </div>
+
+        <div id="mode-selection" class="mode-selection">
+            <h2>Select Game Mode</h2>
+            <button id="ai-vs-ai-btn">AI vs AI</button>
+            <button id="player-vs-ai-btn">Player vs AI</button>
         </div>
-        <canvas id="game-canvas"></canvas>
-        <div class="controls-panel">
-            <label for="speed-slider">Speed:</label>
-            <input type="range" id="speed-slider" min="5" max="30" value="15">
-            <label for="obstacle-toggle">Obstacle Mode:</label>
-            <input type="checkbox" id="obstacle-toggle">
+
+        <div id="game-area" class="hidden">
+            <div class="ui-panel">
+                <div class="score-card snake1">
+                    <h2 id="snake1-title">Green Snake</h2>
+                    <div>Score: <span id="score1">0</span></div>
+                    <div>Length: <span id="length1">5</span></div>
+                </div>
+                <div class="status-panel">
+                    <div id="winner-display"></div>
+                </div>
+                <div class="score-card snake2">
+                    <h2 id="snake2-title">Blue Snake</h2>
+                    <div>Score: <span id="score2">0</span></div>
+                    <div>Length: <span id="length2">5</span></div>
+                </div>
+            </div>
+            
+            <div class="canvas-container">
+                <canvas id="game-canvas"></canvas>
+                <div id="touch-controls-overlay"></div>
+            </div>
+
+            <div class="controls-panel">
+                <label for="speed-slider">Speed:</label>
+                <input type="range" id="speed-slider" min="5" max="30" value="15">
+                <label for="obstacle-toggle">Obstacles:</label>
+                <input type="checkbox" id="obstacle-toggle">
+            </div>
+             <button id="back-to-menu-btn">Back to Menu</button>
         </div>
     </div>
 
