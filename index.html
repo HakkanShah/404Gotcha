@@ -1,39 +1,150 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghaas Khane Wala Dino</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>AI Snake Battle</title>
+<style>
+  body { background: #111; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+  canvas { background: #222; border: 2px solid #555; }
+</style>
 </head>
 <body>
-    <div class="game-container">
-        <div class="hud">
-            <div class="score">HI <span id="high-score">0</span>  <span id="score">0</span></div>
-            <div class="health-bar">
-                <div class="health-fill" id="health-fill"></div>
-                <span id="health-text">100%</span>
-            </div>
-            <button class="mute-btn" id="mute-btn">🔊</button>
-        </div>
-        
-        <div class="game">
-            <div class="dino" id="dino">
-                <img src="https://freesvg.org/img/1549652339.png" alt="T-Rex" class="dino-img">
-            </div>
-            <div class="ground"></div>
-        </div>
+<canvas id="game" width="600" height="600"></canvas>
 
-        <div class="instructions">
-            Press SPACE to jump, DOWN to Eat Grass
-        </div>
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-        <div class="mobile-controls">
-            <button class="control-btn jump-btn" id="jump-btn">JUMP</button>
-            <button class="control-btn eat-btn" id="eat-btn">EAT</button>
-        </div>
-    </div>
-    <script src="game.js"></script>
+const gridSize = 20;
+const tileCount = canvas.width / gridSize;
+
+class Snake {
+  constructor(color, startX, startY) {
+    this.color = color;
+    this.body = [{x: startX, y: startY}];
+    this.dir = {x: 1, y: 0};
+    this.grow = 0;
+    this.score = 0;
+  }
+
+  move() {
+    let head = {x: this.body[0].x + this.dir.x, y: this.body[0].y + this.dir.y};
+    this.body.unshift(head);
+    if (this.grow > 0) {
+      this.grow--;
+    } else {
+      this.body.pop();
+    }
+  }
+
+  draw() {
+    ctx.fillStyle = this.color;
+    for (let part of this.body) {
+      ctx.fillRect(part.x * gridSize, part.y * gridSize, gridSize - 2, gridSize - 2);
+    }
+  }
+
+  setDirection(dx, dy) {
+    if (this.dir.x + dx !== 0 || this.dir.y + dy !== 0) {
+      this.dir = {x: dx, y: dy};
+    }
+  }
+
+  checkCollision(other) {
+    let head = this.body[0];
+    if (head.x < 0 || head.y < 0 || head.x >= tileCount || head.y >= tileCount) return true;
+    for (let i = 1; i < this.body.length; i++) {
+      if (head.x === this.body[i].x && head.y === this.body[i].y) return true;
+    }
+    for (let part of other.body) {
+      if (head.x === part.x && head.y === part.y) return true;
+    }
+    return false;
+  }
+}
+
+class Food {
+  constructor() {
+    this.x = Math.floor(Math.random() * tileCount);
+    this.y = Math.floor(Math.random() * tileCount);
+  }
+
+  draw() {
+    ctx.fillStyle = "red";
+    ctx.fillRect(this.x * gridSize, this.y * gridSize, gridSize - 2, gridSize - 2);
+  }
+
+  respawn(snakes) {
+    let valid = false;
+    while (!valid) {
+      this.x = Math.floor(Math.random() * tileCount);
+      this.y = Math.floor(Math.random() * tileCount);
+      valid = snakes.every(snake => !snake.body.some(part => part.x === this.x && part.y === this.y));
+    }
+  }
+}
+
+let snake1 = new Snake("lime", 5, 5);
+let snake2 = new Snake("cyan", tileCount - 6, tileCount - 6);
+let food = new Food();
+let gameOver = false;
+
+function aiMove(snake, other) {
+  let head = snake.body[0];
+  let bestDir = snake.dir;
+  let minDist = Infinity;
+  const dirs = [
+    {x: 1, y: 0}, {x: -1, y: 0}, {x: 0, y: 1}, {x: 0, y: -1}
+  ];
+  for (let d of dirs) {
+    let nx = head.x + d.x, ny = head.y + d.y;
+    let dist = Math.abs(nx - food.x) + Math.abs(ny - food.y);
+    let collision = snake.body.some(part => part.x === nx && part.y === ny) ||
+                    other.body.some(part => part.x === nx && part.y === ny) ||
+                    nx < 0 || ny < 0 || nx >= tileCount || ny >= tileCount;
+    if (!collision && dist < minDist) {
+      minDist = dist;
+      bestDir = d;
+    }
+  }
+  snake.setDirection(bestDir.x, bestDir.y);
+}
+
+function gameLoop() {
+  if (gameOver) return;
+
+  aiMove(snake1, snake2);
+  aiMove(snake2, snake1);
+
+  snake1.move();
+  snake2.move();
+
+  if (snake1.body[0].x === food.x && snake1.body[0].y === food.y) {
+    snake1.grow++;
+    snake1.score++;
+    food.respawn([snake1, snake2]);
+  }
+  if (snake2.body[0].x === food.x && snake2.body[0].y === food.y) {
+    snake2.grow++;
+    snake2.score++;
+    food.respawn([snake1, snake2]);
+  }
+
+  if (snake1.checkCollision(snake2) || snake2.checkCollision(snake1)) {
+    gameOver = true;
+    setTimeout(() => alert(`Game Over! Score - Snake 1: ${snake1.score}, Snake 2: ${snake2.score}`), 100);
+    return;
+  }
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  food.draw();
+  snake1.draw();
+  snake2.draw();
+
+  setTimeout(gameLoop, 150);
+}
+
+gameLoop();
+</script>
 </body>
 </html>
