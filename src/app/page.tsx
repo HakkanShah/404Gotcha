@@ -40,6 +40,7 @@ async function getGeoData(ip: string): Promise<Partial<Visit>> {
 }
 
 export default async function Home() {
+  const headerList = headers();
   const settings = await getSettings();
 
   // If no settings, redirect to setup page.
@@ -47,7 +48,6 @@ export default async function Home() {
     redirect('/setup');
   }
 
-  const headerList = headers();
   const ip = (headerList.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0].trim();
   const userAgent = headerList.get('user-agent') ?? '';
   const referrer = headerList.get('referer') ?? 'Direct';
@@ -79,16 +79,24 @@ export default async function Home() {
     sendVisitNotification({ ...visit, id: 'temp' }).catch(console.error);
   }
 
-  // Instead of an instant redirect, show a page with a link.
+  // Conditionally redirect to avoid iframe issues in preview.
+  const isIframe = headerList.get('sec-fetch-dest') === 'iframe';
+  if (!isIframe) {
+    redirect(settings.redirectUrl);
+  }
+
+  // Fallback for iFrame view
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm text-center">
         <CardHeader>
           <CardTitle>Visit Tracked!</CardTitle>
-          <CardDescription>You are being redirected.</CardDescription>
+          <CardDescription>
+            You are being redirected. The preview may not show the destination page correctly.
+          </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col items-center gap-4">
-          <Loader2 className="animate-spin text-primary" size={32}/>
+           <Loader2 className="animate-spin text-primary" size={32}/>
           <p className="text-sm text-muted-foreground">
             If you are not redirected automatically, click the link below.
           </p>
@@ -100,7 +108,6 @@ export default async function Home() {
           </Button>
         </CardContent>
       </Card>
-      <meta http-equiv="refresh" content={`2;url=${settings.redirectUrl}`} />
     </main>
   );
 }
