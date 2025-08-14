@@ -4,14 +4,20 @@
 import nodemailer from 'nodemailer';
 import type { Visit } from './types';
 import { getSettings } from './settings';
+import { headers } from 'next/headers';
 
 export async function sendVisitNotification(visit: Visit) {
   const settings = await getSettings();
+  const headerList = headers();
 
   const GMAIL_EMAIL = settings?.gmailEmail;
   const GMAIL_APP_PASSWORD = settings?.gmailAppPassword;
   const NOTIFICATION_EMAIL = settings?.notificationEmail;
-  const APP_URL = process.env.NEXT_PUBLIC_APP_URL || '';
+  
+  // Derive the app URL from request headers for reliability
+  const host = headerList.get('host');
+  const protocol = host?.startsWith('localhost') ? 'http' : 'https';
+  const APP_URL = `${protocol}://${host}`;
 
   if (!GMAIL_EMAIL || !GMAIL_APP_PASSWORD || !NOTIFICATION_EMAIL) {
     console.warn('Missing email credentials in settings. Skipping notification.');
