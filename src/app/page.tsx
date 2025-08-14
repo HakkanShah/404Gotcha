@@ -93,10 +93,10 @@ export default async function Home() {
           <Rocket className="w-full h-full text-primary animate-bounce" />
         </div>
         <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-          Visit Tracked. Engaging Warp Speed!
+          Engaging Warp Speed!
         </h1>
         <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl">
-          You are being redirected to your destination. The preview may not show the destination page correctly.
+          You are being redirected to your destination. Please wait a moment.
         </p>
         <div className="flex justify-center">
             <Button asChild size="lg">
