@@ -18,6 +18,9 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { columns } from "./columns";
 import LogoutButton from "./logout-button";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Settings } from "lucide-react";
 
 export default async function StatsPage() {
   const visits = await getVisits();
@@ -30,7 +33,15 @@ export default async function StatsPage() {
             <h1 className="text-3xl font-bold text-primary">404Gotcha</h1>
             <p className="text-muted-foreground">Visit Analytics Dashboard</p>
           </div>
-          <LogoutButton />
+          <div className="flex items-center gap-2">
+            <Button variant="outline" asChild>
+              <Link href="/setup">
+                <Settings className="mr-2 h-4 w-4" />
+                Setup
+              </Link>
+            </Button>
+            <LogoutButton />
+          </div>
         </header>
 
         <Card className="shadow-lg">
@@ -64,7 +75,7 @@ export default async function StatsPage() {
                       </TableCell>
                       <TableCell>{visit.ip}</TableCell>
                       <TableCell>
-                        {`${visit.city || '?'}, ${visit.country || '?'}`}
+                        {`${visit.city || "?"}, ${visit.country || "?"}`}
                       </TableCell>
                       <TableCell>
                         {`${visit.device} (${visit.os}, ${visit.browser})`}
@@ -81,7 +92,9 @@ export default async function StatsPage() {
                       </TableCell>
                       <TableCell>
                         {visit.isBot ? (
-                          <Badge variant="destructive" title={visit.botReason}>Bot</Badge>
+                          <Badge variant="destructive" title={visit.botReason}>
+                            Bot
+                          </Badge>
                         ) : (
                           <Badge variant="secondary">Human</Badge>
                         )}
@@ -90,8 +103,20 @@ export default async function StatsPage() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={columns.length} className="text-center h-24">
-                      No visits yet. Share your link to get started!
+                    <TableCell
+                      colSpan={columns.length}
+                      className="text-center h-24"
+                    >
+                      <div className="flex flex-col items-center gap-2">
+                        <p>No visits yet. Share your link to get started!</p>
+                        <p className="text-sm text-muted-foreground">
+                          Or, finish your{" "}
+                          <Link href="/setup" className="underline text-primary">
+                            configuration
+                          </Link>
+                          .
+                        </p>
+                      </div>
                     </TableCell>
                   </TableRow>
                 )}

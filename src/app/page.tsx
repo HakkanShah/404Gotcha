@@ -1,3 +1,4 @@
+
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { addVisit } from '@/lib/visits';
@@ -5,6 +6,7 @@ import { sendVisitNotification } from '@/lib/email';
 import { filterBotTraffic } from '@/ai/flows/filter-bot-traffic';
 import { parseUserAgent } from '@/lib/utils';
 import type { Visit } from '@/lib/types';
+import { getSettings } from '@/lib/settings';
 
 async function getGeoData(ip: string): Promise<Partial<Visit>> {
   if (ip === '127.0.0.1' || ip === '::1') {
@@ -34,6 +36,13 @@ async function getGeoData(ip: string): Promise<Partial<Visit>> {
 }
 
 export default async function Home() {
+  const settings = await getSettings();
+
+  // If no settings, redirect to setup page.
+  if (!settings || !settings.redirectUrl || !settings.statsPassword) {
+    redirect('/setup');
+  }
+
   const headerList = headers();
   const ip = (headerList.get('x-forwarded-for') ?? '127.0.0.1').split(',')[0].trim();
   const userAgent = headerList.get('user-agent') ?? '';
@@ -66,5 +75,5 @@ export default async function Home() {
     sendVisitNotification({ ...visit, id: 'temp' }).catch(console.error);
   }
 
-  redirect(process.env.REDIRECT_URL || '/login');
+  redirect(settings.redirectUrl);
 }
