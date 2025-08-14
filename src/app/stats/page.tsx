@@ -20,15 +20,20 @@ import { columns } from "./columns";
 import LogoutButton from "./logout-button";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Settings } from "lucide-react";
+import { Settings, Users, Bot, Target } from "lucide-react";
+import StatsSummary from "./stats-summary";
 
 export default async function StatsPage() {
   const visits = await getVisits();
 
+  const totalVisits = visits.length;
+  const humanVisits = visits.filter((v) => !v.isBot).length;
+  const botVisits = totalVisits - humanVisits;
+
   return (
     <div className="min-h-screen bg-background p-4 sm:p-6 md:p-8">
       <div className="max-w-7xl mx-auto">
-        <header className="flex items-center justify-between mb-6">
+        <header className="flex flex-wrap items-center justify-between gap-4 mb-6">
           <div>
             <h1 className="text-3xl font-bold text-primary">404Gotcha</h1>
             <p className="text-muted-foreground">Visit Analytics Dashboard</p>
@@ -43,6 +48,12 @@ export default async function StatsPage() {
             <LogoutButton />
           </div>
         </header>
+
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+          <StatsSummary icon={<Target />} title="Total Visits" value={totalVisits} />
+          <StatsSummary icon={<Users />} title="Human Visits" value={humanVisits} />
+          <StatsSummary icon={<Bot />} title="Bot Visits" value={botVisits} />
+        </section>
 
         <Card className="shadow-lg">
           <CardHeader>
