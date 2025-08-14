@@ -1,5 +1,21 @@
 [
   {
+    "id": "2025-08-14T21:15:50.731Z-h8xnpdq",
+    "timestamp": "2025-08-14T21:15:50.730Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Unknown",
+    "browser": "Unknown",
+    "device": "Desktop",
+    "userAgent": "node",
+    "referrer": "Direct",
+    "isBot": true,
+    "botReason": "Suspicious User Agent"
+  },
+  {
     "id": "2025-08-14T21:14:02.643Z-1cl89iu",
     "timestamp": "2025-08-14T21:14:02.642Z",
     "ip": "127.0.0.1",
