@@ -8,14 +8,13 @@ export function middleware(request: NextRequest) {
   const authToken = request.cookies.get(AUTH_COOKIE_NAME)?.value;
   const { pathname } = request.nextUrl;
 
-  // Allow access to setup page regardless of auth status
-  if (pathname.startsWith('/setup')) {
-    return NextResponse.next();
-  }
-
   const isTryingToAccessStats = pathname.startsWith('/stats');
   const isTryingToAccessLogin = pathname.startsWith('/login');
 
+  if (pathname.startsWith('/setup')) {
+    return NextResponse.next();
+  }
+  
   if (isTryingToAccessStats && authToken !== 'true') {
     return NextResponse.redirect(new URL('/login', request.url));
   }
@@ -28,5 +27,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/stats/:path*', '/login', '/setup'],
+  matcher: ['/stats', '/login', '/setup'],
 };
