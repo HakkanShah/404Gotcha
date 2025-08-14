@@ -10,7 +10,7 @@ import type { Visit } from '@/lib/types';
 import { getSettings } from '@/lib/settings';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Loader2 } from 'lucide-react';
+import { ExternalLink, Rocket, Target } from 'lucide-react';
 
 async function getGeoData(ip: string): Promise<Partial<Visit>> {
   if (ip === '127.0.0.1' || ip === '::1') {
@@ -88,26 +88,28 @@ export default async function Home() {
   // Fallback for iFrame view
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
-      <Card className="w-full max-w-sm text-center">
-        <CardHeader>
-          <CardTitle>Visit Tracked!</CardTitle>
-          <CardDescription>
-            You are being redirected. The preview may not show the destination page correctly.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col items-center gap-4">
-           <Loader2 className="animate-spin text-primary" size={32}/>
-          <p className="text-sm text-muted-foreground">
-            If you are not redirected automatically, click the link below.
+      <div className="text-center space-y-4">
+        <div className="relative w-24 h-24 mx-auto">
+          <Rocket className="w-full h-full text-primary animate-bounce" />
+        </div>
+        <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
+          Visit Tracked. Engaging Warp Speed!
+        </h1>
+        <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl">
+          You are being redirected to your destination. The preview may not show the destination page correctly.
+        </p>
+        <div className="flex justify-center">
+            <Button asChild size="lg">
+                <a href={settings.redirectUrl} target="_blank" rel="noopener noreferrer">
+                  Go to Destination
+                  <ExternalLink className="ml-2" />
+                </a>
+            </Button>
+        </div>
+        <p className="text-sm text-muted-foreground pt-4">
+            If you are not redirected automatically, please click the button above.
           </p>
-          <Button asChild className="w-full">
-            <a href={settings.redirectUrl} target="_blank" rel="noopener noreferrer">
-              Go to {settings.redirectUrl}
-              <ExternalLink className="ml-2" />
-            </a>
-          </Button>
-        </CardContent>
-      </Card>
+      </div>
     </main>
   );
 }
