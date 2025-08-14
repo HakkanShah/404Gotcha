@@ -1,12 +1,16 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
+import Link from 'next/link';
 import { addVisit } from '@/lib/visits';
 import { sendVisitNotification } from '@/lib/email';
 import { filterBotTraffic } from '@/ai/flows/filter-bot-traffic';
 import { parseUserAgent } from '@/lib/utils';
 import type { Visit } from '@/lib/types';
 import { getSettings } from '@/lib/settings';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { ExternalLink, Loader2 } from 'lucide-react';
 
 async function getGeoData(ip: string): Promise<Partial<Visit>> {
   if (ip === '127.0.0.1' || ip === '::1') {
@@ -75,5 +79,28 @@ export default async function Home() {
     sendVisitNotification({ ...visit, id: 'temp' }).catch(console.error);
   }
 
-  redirect(settings.redirectUrl);
+  // Instead of an instant redirect, show a page with a link.
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-sm text-center">
+        <CardHeader>
+          <CardTitle>Visit Tracked!</CardTitle>
+          <CardDescription>You are being redirected.</CardDescription>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center gap-4">
+          <Loader2 className="animate-spin text-primary" size={32}/>
+          <p className="text-sm text-muted-foreground">
+            If you are not redirected automatically, click the link below.
+          </p>
+          <Button asChild className="w-full">
+            <a href={settings.redirectUrl} target="_blank" rel="noopener noreferrer">
+              Go to {settings.redirectUrl}
+              <ExternalLink className="ml-2" />
+            </a>
+          </Button>
+        </CardContent>
+      </Card>
+      <meta http-equiv="refresh" content={`2;url=${settings.redirectUrl}`} />
+    </main>
+  );
 }
