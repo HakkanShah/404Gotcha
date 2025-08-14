@@ -1,0 +1,34 @@
+[
+  {
+    "id": "2025-08-14T21:01:17.084Z-zgzvjpn",
+    "timestamp": "2025-08-14T21:01:17.084Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Unknown",
+    "browser": "Unknown",
+    "device": "Desktop",
+    "userAgent": "node",
+    "referrer": "Direct",
+    "isBot": true,
+    "botReason": "Suspicious User Agent"
+  },
+  {
+    "id": "2025-08-14T21:01:05.301Z-mirhgv9",
+    "timestamp": "2025-08-14T21:01:05.298Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Linux",
+    "browser": "Chrome",
+    "device": "Mobile",
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
+    "referrer": "https://6000-firebase-studio-1755201230091.cluster-htdgsbmflbdmov5xrjithceibm.cloudworkstations.dev/capra/?origin=https%3A%2F%2Fstudio.firebase.google.com",
+    "isBot": true,
+    "botReason": "Unusual Chrome version number."
+  }
+]
