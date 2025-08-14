@@ -7,9 +7,11 @@ import { getSettings } from './settings';
 
 const AUTH_COOKIE_NAME = '404gotcha-auth';
 
-export async function loginAction(password: string) {
+// The previousState argument is required for useActionState, but we don't need it.
+export async function loginAction(previousState: any, formData: FormData) {
+  const password = formData.get('password') as string;
   const settings = await getSettings();
-  const storedPassword = settings?.statsPassword || process.env.STATS_PASSWORD;
+  const storedPassword = settings?.statsPassword;
 
   if (storedPassword && password === storedPassword) {
     cookies().set(AUTH_COOKIE_NAME, 'true', {

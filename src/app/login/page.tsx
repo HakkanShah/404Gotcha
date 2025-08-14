@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +25,7 @@ import {
 } from "@/components/ui/card";
 import { loginAction } from "@/lib/actions";
 import { useToast } from "@/hooks/use-toast";
-import { KeyRound } from "lucide-react";
+import { KeyRound, Loader2 } from "lucide-react";
 
 const formSchema = z.object({
   password: z.string().min(1, {
@@ -33,7 +34,7 @@ const formSchema = z.object({
 });
 
 export default function LoginPage() {
-  const [state, formAction] = useActionState(loginAction, undefined);
+  const [state, formAction, isPending] = useActionState(loginAction, undefined);
   const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -50,12 +51,10 @@ export default function LoginPage() {
         title: "Login Failed",
         description: state.error,
       });
+      // Reset password field on error to allow re-entry
+      form.resetField("password");
     }
-  }, [state, toast]);
-
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    formAction(values.password);
-  }
+  }, [state, toast, form]);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
@@ -71,7 +70,7 @@ export default function LoginPage() {
         </CardHeader>
         <CardContent>
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form action={formAction} className="space-y-6">
               <FormField
                 control={form.control}
                 name="password"
@@ -83,13 +82,15 @@ export default function LoginPage() {
                         type="password"
                         placeholder="••••••••"
                         {...field}
+                        required
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending && <Loader2 className="mr-2 animate-spin" />}
                 Unlock Stats
               </Button>
             </form>

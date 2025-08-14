@@ -1,8 +1,7 @@
-
 {
-  "redirectUrl": "",
-  "statsPassword": "",
-  "notificationEmail": "",
-  "gmailEmail": "",
-  "gmailAppPassword": ""
+  "redirectUrl": "https://github.com/HakkanShah",
+  "statsPassword": "Hakkan@123",
+  "notificationEmail": "hakkanparbej@gmail.com",
+  "gmailEmail": "hakkanparbejshah@gmail.com",
+  "gmailAppPassword": "Hakkanparbej@123"
 }
