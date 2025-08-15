@@ -9,79 +9,25 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useToast } from "@/hooks/use-toast";
 import { Loader2, Settings } from "lucide-react";
-import { getSettings, saveSettings } from "@/lib/settings";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 
-const formSchema = z.object({
-  redirectUrl: z.string().url({ message: "Please enter a valid URL." }),
-});
-
-type SettingsData = z.infer<typeof formSchema>;
-
 export default function SetupPage() {
-  const { toast } = useToast();
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [appUrl, setAppUrl] = useState('');
-
-  const form = useForm<SettingsData>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      redirectUrl: "",
-    },
-  });
 
   useEffect(() => {
     setAppUrl(window.location.origin);
-    
-    async function fetchSettings() {
-      setLoading(true);
-      const settings = await getSettings();
-      if (settings?.redirectUrl) {
-        form.reset({ redirectUrl: settings.redirectUrl });
-      }
-      setLoading(false);
-    }
-    fetchSettings();
-  }, [form]);
+    setLoading(false);
+  }, []);
 
-  async function onSubmit(values: SettingsData) {
-    setSaving(true);
-    try {
-      await saveSettings(values);
-      toast({
-        title: "Settings Saved",
-        description: "Your new settings have been applied.",
-      });
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: "Failed to save settings.",
-      });
-    } finally {
-      setSaving(false);
-    }
-  }
 
   if (loading) {
     return (
@@ -100,56 +46,31 @@ export default function SetupPage() {
             Configuration
           </CardTitle>
           <CardDescription>
-            Configure your 404Gotcha tracker. Once saved, you can start using your tracking link.
+            All application settings are now managed via environment variables on your hosting provider.
           </CardDescription>
         </CardHeader>
-        <CardContent>
-          <Alert className="mb-6">
+        <CardContent className="space-y-6">
+           <Alert className="mb-6">
             <AlertTitle>Your Tracking Link</AlertTitle>
             <AlertDescription>
-              Once you save your settings, any visit to{' '}
+              Any visit to{' '}
               <Link href="/" className="font-mono text-primary hover:underline">{appUrl}/</Link> 
-              {' '}will be logged and redirected.
+              {' '}will be logged and redirected to the URL you configured in your environment variables.
             </AlertDescription>
           </Alert>
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <FormField
-                control={form.control}
-                name="redirectUrl"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Redirect URL</FormLabel>
-                    <FormControl>
-                      <Input placeholder="https://your-main-site.com" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      This is where visitors will be sent after their visit is logged.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <Alert variant="default">
-                <AlertTitle>Other Settings</AlertTitle>
-                <AlertDescription>
-                  Your password and email notification settings are managed via environment variables on your hosting provider (e.g., Netlify).
-                </AlertDescription>
-              </Alert>
+          <Alert variant="default">
+            <AlertTitle>How to Change Settings</AlertTitle>
+            <AlertDescription>
+              To change your Redirect URL, password, or email notification settings, please update the environment variables on your hosting provider (e.g., Netlify) and redeploy your application.
+            </AlertDescription>
+          </Alert>
 
-              <div className="flex items-center justify-between">
-                <Button variant="outline" asChild>
-                  <Link href="/stats">Back to Stats</Link>
-                </Button>
-                <Button type="submit" disabled={saving}>
-                  {saving && <Loader2 className="mr-2 animate-spin" />}
-                  Save Settings
-                </Button>
-              </div>
-            </form>
-          </Form>
+          <div className="flex items-center justify-start">
+            <Button variant="outline" asChild>
+              <Link href="/stats">Go to Stats</Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </main>

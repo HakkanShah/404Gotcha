@@ -1,8 +1,6 @@
 
 'use server';
 
-import { promises as fs } from 'fs';
-import path from 'path';
 import { z } from 'zod';
 
 const settingsSchema = z.object({
@@ -15,55 +13,20 @@ const settingsSchema = z.object({
 
 type Settings = z.infer<typeof settingsSchema>;
 
-const settingsFilePath = path.join(process.env.NETLIFY || process.env.VERCEL ? '/tmp' : process.cwd(), 'settings.json');
-
-async function ensureFileExists(): Promise<void> {
-  try {
-    await fs.access(settingsFilePath);
-  } catch {
-    // Initialize with redirectUrl from env if available
-    const initialSettings = {
-      redirectUrl: process.env.REDIRECT_URL || ""
-    };
-    await fs.writeFile(settingsFilePath, JSON.stringify(initialSettings));
-  }
+// This function now reads exclusively from environment variables.
+export async function getSettings(): Promise<Settings> {
+  return {
+    redirectUrl: process.env.REDIRECT_URL,
+    statsPassword: process.env.STATS_PASSWORD,
+    notificationEmail: process.env.NOTIFICATION_EMAIL,
+    gmailEmail: process.env.GMAIL_EMAIL,
+    gmailAppPassword: process.env.GMAIL_APP_PASSWORD,
+  };
 }
 
-export async function getSettings(): Promise<Settings | null> {
-  await ensureFileExists();
-  try {
-    const data = await fs.readFile(settingsFilePath, 'utf-8');
-    const fileSettings = JSON.parse(data || '{}');
-    
-    // Combine file settings with environment variables
-    // Environment variables take precedence
-    return {
-      redirectUrl: process.env.REDIRECT_URL || fileSettings.redirectUrl,
-      statsPassword: process.env.STATS_PASSWORD,
-      notificationEmail: process.env.NOTIFICATION_EMAIL,
-      gmailEmail: process.env.GMAIL_EMAIL,
-      gmailAppPassword: process.env.GMAIL_APP_PASSWORD,
-    };
-  } catch (error) {
-    console.error("Error reading or parsing settings file:", error);
-    // Fallback to environment variables only
-    return {
-      redirectUrl: process.env.REDIRECT_URL,
-      statsPassword: process.env.STATS_PASSWORD,
-      notificationEmail: process.env.NOTIFICATION_EMAIL,
-      gmailEmail: process.env.GMAIL_EMAIL,
-      gmailAppPassword: process.env.GMAIL_APP_PASSWORD,
-    };
-  }
-}
-
-// This function will now only save the redirectUrl
-export async function saveSettings(settings: Pick<Settings, 'redirectUrl'>): Promise<void> {
-    const validatedSettings = z.object({ redirectUrl: z.string().url().optional() }).parse(settings);
-    try {
-        await fs.writeFile(settingsFilePath, JSON.stringify(validatedSettings, null, 2));
-    } catch (error) {
-        console.error("Error writing to settings file:", error);
-        throw new Error("Could not save settings.");
-    }
+// This function is no longer needed as all settings are managed by environment variables.
+// We will keep it to prevent build errors from where it's imported, but it does nothing.
+export async function saveSettings(settings: Partial<Settings>): Promise<void> {
+    console.log("Settings are now managed via environment variables and cannot be saved at runtime.");
+    return Promise.resolve();
 }

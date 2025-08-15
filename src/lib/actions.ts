@@ -22,7 +22,7 @@ export async function loginAction(previousState: any, formData: FormData) {
     });
     redirect('/stats');
   } else if (!storedPassword) {
-     return { error: 'Password is not set. Please configure it on the setup page.' };
+     return { error: 'Password is not set. Please configure it via environment variables.' };
   }
   else {
     return { error: 'Invalid password. Please try again.' };
