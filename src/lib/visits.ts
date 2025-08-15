@@ -1,3 +1,4 @@
+
 import { promises as fs } from 'fs';
 import path from 'path';
 import type { Visit } from './types';
@@ -15,13 +16,18 @@ async function ensureFileExists() {
 
 export async function getVisits(): Promise<Visit[]> {
   await ensureFileExists();
+  let data = '';
   try {
-    const data = await fs.readFile(visitsFilePath, 'utf-8');
+    data = await fs.readFile(visitsFilePath, 'utf-8');
     // Handle empty file case
     if (!data) return [];
     return JSON.parse(data);
   } catch (error) {
     console.error("Error reading or parsing visits file:", error);
+    // If parsing fails, it's likely corrupt. Log it and treat as empty.
+    if (data) { // Only log if there was something to parse
+      console.error("Corrupted visits.json content:", data);
+    }
     return [];
   }
 }
