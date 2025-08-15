@@ -16,7 +16,7 @@ const settingsSchema = z.object({
 type Settings = z.infer<typeof settingsSchema>;
 
 // In serverless environments, only the /tmp directory is writable.
-const settingsFilePath = path.join(process.env.VERCEL ? '/tmp' : process.cwd(), 'settings.json');
+const settingsFilePath = path.join(process.env.NETLIFY || process.env.VERCEL ? '/tmp' : process.cwd(), 'settings.json');
 
 
 async function ensureFileExists(): Promise<void> {

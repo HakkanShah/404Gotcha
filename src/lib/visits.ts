@@ -3,7 +3,7 @@ import path from 'path';
 import type { Visit } from './types';
 
 // In serverless environments, only the /tmp directory is writable.
-const visitsFilePath = path.join(process.env.VERCEL ? '/tmp' : process.cwd(), 'visits.json');
+const visitsFilePath = path.join(process.env.NETLIFY || process.env.VERCEL ? '/tmp' : process.cwd(), 'visits.json');
 
 async function ensureFileExists() {
   try {

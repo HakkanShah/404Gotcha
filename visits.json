@@ -1,5 +1,37 @@
 [
   {
+    "id": "2025-08-15T11:05:24.190Z-9s5dpd9",
+    "timestamp": "2025-08-15T11:05:24.185Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Unknown",
+    "browser": "Unknown",
+    "device": "Desktop",
+    "userAgent": "node",
+    "referrer": "Direct",
+    "isBot": true,
+    "botReason": "Suspicious User Agent: 'node'."
+  },
+  {
+    "id": "2025-08-15T11:03:14.533Z-voeih8i",
+    "timestamp": "2025-08-15T11:03:14.532Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Windows",
+    "browser": "Chrome",
+    "device": "Desktop",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "referrer": "https://6000-firebase-studio-1755201230091.cluster-htdgsbmflbdmov5xrjithceibm.cloudworkstations.dev/capra/?origin=https%3A%2F%2Fstudio.firebase.google.com",
+    "isBot": true,
+    "botReason": "Suspicious referrer URL from a cloud workstation development environment."
+  },
+  {
     "id": "2025-08-15T10:45:30.951Z-xcut8ua",
     "timestamp": "2025-08-15T10:45:30.945Z",
     "ip": "127.0.0.1",
