@@ -21,7 +21,7 @@ import { columns } from "./columns";
 import LogoutButton from "./logout-button";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Settings, Users, Bot, Target } from "lucide-react";
+import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon } from "lucide-react";
 import StatsSummary from "./stats-summary";
 
 export default async function StatsPage() {
@@ -64,85 +64,151 @@ export default async function StatsPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableCaption>A list of recent visits.</TableCaption>
-              <TableHeader>
-                <TableRow>
-                  {columns.map((col) => (
-                    <TableHead key={col.id} className={col.className}>
-                      <div className="flex items-center gap-2">
-                        {col.icon}
-                        {col.header}
-                      </div>
-                    </TableHead>
-                  ))}
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {visits.length > 0 ? (
-                  visits.map((visit) => (
-                    <TableRow key={visit.id}>
-                      <TableCell>
-                        {new Date(visit.timestamp).toLocaleString("en-IN", {
-                          timeZone: "Asia/Kolkata",
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric',
-                          hour: 'numeric',
-                          minute: '2-digit',
-                          second: '2-digit',
-                          hour12: true,
-                        })}
-                      </TableCell>
-                      <TableCell>{visit.ip}</TableCell>
-                      <TableCell>
-                        {`${visit.city || "?"}, ${visit.country || "?"}`}
-                      </TableCell>
-                      <TableCell>
-                        {`${visit.device} (${visit.os}, ${visit.browser})`}
-                      </TableCell>
-                      <TableCell className="max-w-xs truncate">
-                        <a
-                          href={visit.referrer}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="hover:underline"
-                        >
-                          {visit.referrer}
-                        </a>
-                      </TableCell>
-                      <TableCell>
-                        {visit.isBot ? (
-                          <Badge variant="destructive" title={visit.botReason}>
-                            Bot
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary">Human</Badge>
-                        )}
+            {/* Desktop Table View */}
+            <div className="hidden md:block">
+              <Table>
+                <TableCaption>A list of recent visits.</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    {columns.map((col) => (
+                      <TableHead key={col.id} className={col.className}>
+                        <div className="flex items-center gap-2">
+                          {col.icon}
+                          {col.header}
+                        </div>
+                      </TableHead>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {visits.length > 0 ? (
+                    visits.map((visit) => (
+                      <TableRow key={visit.id}>
+                        <TableCell>
+                          {new Date(visit.timestamp).toLocaleString("en-IN", {
+                            timeZone: "Asia/Kolkata",
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric',
+                            hour: 'numeric',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: true,
+                          })}
+                        </TableCell>
+                        <TableCell>{visit.ip}</TableCell>
+                        <TableCell>
+                          {`${visit.city || "?"}, ${visit.country || "?"}`}
+                        </TableCell>
+                        <TableCell>
+                          {`${visit.device} (${visit.os}, ${visit.browser})`}
+                        </TableCell>
+                        <TableCell className="max-w-xs truncate">
+                          <a
+                            href={visit.referrer}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="hover:underline"
+                          >
+                            {visit.referrer}
+                          </a>
+                        </TableCell>
+                        <TableCell>
+                          {visit.isBot ? (
+                            <Badge variant="destructive" title={visit.botReason}>
+                              Bot
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary">Human</Badge>
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))
+                  ) : (
+                    <TableRow>
+                      <TableCell
+                        colSpan={columns.length}
+                        className="text-center h-24"
+                      >
+                         <div className="flex flex-col items-center gap-2">
+                          <p>No visits yet. Share your link to get started!</p>
+                          <p className="text-sm text-muted-foreground">
+                            Or, finish your{" "}
+                            <Link href="/setup" className="underline text-primary">
+                              configuration
+                            </Link>
+                            .
+                          </p>
+                        </div>
                       </TableCell>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={columns.length}
-                      className="text-center h-24"
-                    >
-                      <div className="flex flex-col items-center gap-2">
-                        <p>No visits yet. Share your link to get started!</p>
-                        <p className="text-sm text-muted-foreground">
-                          Or, finish your{" "}
-                          <Link href="/setup" className="underline text-primary">
-                            configuration
-                          </Link>
-                          .
-                        </p>
+                  )}
+                </TableBody>
+              </Table>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="md:hidden space-y-4">
+              {visits.length > 0 ? (
+                visits.map((visit) => (
+                  <Card key={visit.id} className="w-full">
+                    <CardContent className="pt-4">
+                      <div className="flex justify-between items-start">
+                         <div className="text-sm text-muted-foreground flex items-center">
+                           <Calendar size={14} className="mr-2" />
+                           {new Date(visit.timestamp).toLocaleString("en-IN", {
+                              timeZone: "Asia/Kolkata",
+                              month: 'short',
+                              day: 'numeric',
+                              hour: 'numeric',
+                              minute: '2-digit',
+                              hour12: true,
+                            })}
+                          </div>
+                           {visit.isBot ? (
+                            <Badge variant="destructive" title={visit.botReason}>
+                              Bot
+                            </Badge>
+                          ) : (
+                            <Badge variant="secondary">Human</Badge>
+                          )}
                       </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+                      <div className="space-y-2 mt-2">
+                        <div className="flex items-center text-sm">
+                          <Hash size={14} className="mr-2 text-muted-foreground" />
+                          <span className="font-mono">{visit.ip}</span>
+                        </div>
+                        <div className="flex items-center text-sm">
+                           <MapPin size={14} className="mr-2 text-muted-foreground" />
+                           {`${visit.city || "?"}, ${visit.country || "?"}`}
+                        </div>
+                        <div className="flex items-center text-sm">
+                          <Laptop size={14} className="mr-2 text-muted-foreground" />
+                           {`${visit.device} (${visit.os}, ${visit.browser})`}
+                        </div>
+                         <div className="flex items-start text-sm">
+                           <LinkIcon size={14} className="mr-2 mt-1 text-muted-foreground" />
+                           <a href={visit.referrer} target="_blank" rel="noopener noreferrer" className="hover:underline break-all">
+                              {visit.referrer}
+                           </a>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+               ) : (
+                  <div className="text-center h-24 flex flex-col items-center justify-center gap-2">
+                    <p>No visits yet!</p>
+                    <p className="text-sm text-muted-foreground">
+                      Share your link to get started or finish your{' '}
+                      <Link href="/setup" className="underline text-primary">
+                        configuration
+                      </Link>.
+                    </p>
+                  </div>
+              )}
+            </div>
+
           </CardContent>
         </Card>
       </div>
