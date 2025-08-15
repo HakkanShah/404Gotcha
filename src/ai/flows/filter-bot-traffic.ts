@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -32,17 +33,21 @@ const prompt = ai.definePrompt({
   name: 'filterBotTrafficPrompt',
   input: {schema: FilterBotTrafficInputSchema},
   output: {schema: FilterBotTrafficOutputSchema},
-  prompt: `You are an expert in identifying bot traffic.
+  prompt: `You are an expert in identifying bot traffic from web request headers.
 
-  You are given the following information about a visitor:
-  User Agent: {{{userAgent}}}
-  IP Address: {{{ipAddress}}}
-  Referrer URL: {{{referrer}}}
+  Analyze the following visitor information to determine if it is a bot.
 
-  Based on this information, determine if the visit is from a bot.
-  If the visit is from a bot, set isBot to true and provide a reason why the visit is classified as bot traffic.
-  If the visit is not from a bot, set isBot to false and the reason to an empty string.
-  Keep the reason short and concise.
+  - User Agent: {{{userAgent}}}
+  - IP Address: {{{ipAddress}}}
+  - Referrer URL: {{{referrer}}}
+
+  Here are your rules for classification:
+  1.  **High-Confidence Bot Indicators:** If the User Agent contains terms like 'bot', 'spider', 'crawler', 'headless', or is very unusual (e.g., 'node'), classify it as a bot.
+  2.  **Suspicious Referrers:** If the referrer is from a known cloud development environment (e.g., 'cloudworkstations.dev', 'gitpod.io') or a known analytics-blocker, it's likely a bot.
+  3.  **Local & Private IPs:** Be cautious with IPs like '127.0.0.1' or private network IPs. These often indicate development or testing, but don't automatically classify them as bots unless the User Agent or Referrer is also suspicious. A real user might be behind a VPN.
+  4.  **Direct Traffic:** A referrer of 'Direct' or empty is common for real users. Do not classify this as a bot on its own.
+
+  Based on these rules, determine if the visit is from a bot. Provide a concise, clear reason for your decision if you identify a bot. If it appears to be a human, set isBot to false.
   `,
 });
 
