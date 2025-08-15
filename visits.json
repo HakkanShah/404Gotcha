@@ -1,5 +1,37 @@
 [
   {
+    "id": "2025-08-15T18:53:38.431Z-y8yk0i8",
+    "timestamp": "2025-08-15T18:53:38.428Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Unknown",
+    "browser": "Unknown",
+    "device": "Desktop",
+    "userAgent": "node",
+    "referrer": "Direct",
+    "isBot": true,
+    "botReason": "The User Agent is 'node', which is indicative of bot traffic according to rule #1."
+  },
+  {
+    "id": "2025-08-15T18:52:14.001Z-bmwxmry",
+    "timestamp": "2025-08-15T18:52:13.996Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Windows",
+    "browser": "Chrome",
+    "device": "Desktop",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "referrer": "https://6000-firebase-studio-1755201230091.cluster-htdgsbmflbdmov5xrjithceibm.cloudworkstations.dev/capra/?origin=https%3A%2F%2Fstudio.firebase.google.com",
+    "isBot": true,
+    "botReason": "The referrer URL contains 'cloudworkstations.dev', which is a known cloud development environment, indicating bot activity. Additionally, the IP address is a local IP, which raises further suspicion in conjunction with the referrer."
+  },
+  {
     "id": "2025-08-15T18:46:59.923Z-wx33u04",
     "timestamp": "2025-08-15T18:46:59.921Z",
     "ip": "127.0.0.1",

@@ -19,22 +19,23 @@ export async function getVisits(): Promise<Visit[]> {
   let data = '';
   try {
     data = await fs.readFile(visitsFilePath, 'utf-8');
-    // Handle empty file case
     if (!data.trim()) return [];
-    
-    // Add a try-catch block specifically for parsing
-    try {
-      return JSON.parse(data);
-    } catch (parseError) {
-      console.error("Error parsing visits.json:", parseError);
+    return JSON.parse(data);
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      console.error("Error parsing visits.json:", error);
       console.error("Corrupted content:", data);
-      // If parsing fails, the file is corrupt. Return empty and let new visits overwrite it.
+      // File is corrupt, back it up and start a new one
+      try {
+        await fs.rename(visitsFilePath, `${visitsFilePath}.corrupt`);
+        await fs.writeFile(visitsFilePath, JSON.stringify([]));
+      } catch (backupError) {
+        console.error("Could not back up corrupted file:", backupError);
+      }
       return [];
     }
-
-  } catch (readError) {
-    console.error("Error reading visits file:", readError);
-    return []; // Return empty array if file can't be read
+    console.error("Error reading visits file:", error);
+    return []; // Return empty array for other read errors
   }
 }
 
