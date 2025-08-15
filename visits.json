@@ -1,5 +1,21 @@
 [
   {
+    "id": "2025-08-15T18:40:45.381Z-9f00hlx",
+    "timestamp": "2025-08-15T18:40:45.363Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Unknown",
+    "browser": "Unknown",
+    "device": "Desktop",
+    "userAgent": "node",
+    "referrer": "Direct",
+    "isBot": true,
+    "botReason": "The User Agent 'node' is highly unusual for a typical web browser and is a strong indicator of bot activity."
+  },
+  {
     "id": "2025-08-15T18:39:46.493Z-r1l49s4",
     "timestamp": "2025-08-15T18:39:46.491Z",
     "ip": "127.0.0.1",

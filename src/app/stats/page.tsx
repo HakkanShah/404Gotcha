@@ -1,7 +1,7 @@
 
 'use client';
 
-import { getVisits } from "@/lib/visits";
+import { getVisitsAction } from "@/lib/actions";
 import {
   Table,
   TableBody,
@@ -137,7 +137,7 @@ export default function StatsPage() {
   useEffect(() => {
     async function fetchVisits() {
       try {
-        const fetchedVisits = await getVisits();
+        const fetchedVisits = await getVisitsAction();
         setVisits(fetchedVisits);
       } catch (error) {
         console.error("Failed to fetch visits:", error);

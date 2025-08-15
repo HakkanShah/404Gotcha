@@ -4,7 +4,7 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { settings } from './settings';
-import { clearAllVisits, deleteVisit } from './visits';
+import { clearAllVisits, deleteVisit, getVisits } from './visits';
 import { revalidatePath } from 'next/cache';
 
 const AUTH_COOKIE_NAME = '404gotcha-auth';
@@ -33,6 +33,10 @@ export async function loginAction(previousState: any, formData: FormData) {
 export async function logoutAction() {
   cookies().delete(AUTH_COOKIE_NAME);
   redirect('/login');
+}
+
+export async function getVisitsAction() {
+  return await getVisits();
 }
 
 export async function deleteVisitAction(visitId: string) {
