@@ -138,9 +138,11 @@ export default function StatsPage() {
     async function fetchVisits() {
       try {
         const fetchedVisits = await getVisitsAction();
-        setVisits(fetchedVisits);
+        // Ensure we always have an array
+        setVisits(fetchedVisits || []);
       } catch (error) {
         console.error("Failed to fetch visits:", error);
+        setVisits([]); // Set to empty array on error
       } finally {
         setLoading(false);
       }
@@ -180,8 +182,8 @@ export default function StatsPage() {
     );
   }
 
-  const totalVisits = visits.length;
-  const humanVisits = visits.filter((v) => !v.isBot).length;
+  const totalVisits = Array.isArray(visits) ? visits.length : 0;
+  const humanVisits = Array.isArray(visits) ? visits.filter((v) => !v.isBot).length : 0;
   const botVisits = totalVisits - humanVisits;
 
   return (
@@ -236,7 +238,7 @@ export default function StatsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {visits.length > 0 ? (
+                  {visits && visits.length > 0 ? (
                     visits.map((visit) => (
                       <TableRow key={visit.id}>
                         <TableCell>
@@ -307,7 +309,7 @@ export default function StatsPage() {
 
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
-              {visits.length > 0 ? (
+              {visits && visits.length > 0 ? (
                 visits.map((visit) => (
                   <MobileVisitCard key={visit.id} visit={visit} onDelete={handleDeleteRequest} />
                 ))
