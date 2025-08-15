@@ -82,7 +82,7 @@ export default async function Home() {
   // Conditionally redirect to avoid iframe issues in preview.
   const isIframe = headerList.get('sec-fetch-dest') === 'iframe';
   if (!isIframe) {
-    redirect(settings.redirectUrl);
+    redirect(settings.redirectUrl!);
   }
 
   // Fallback for iFrame view

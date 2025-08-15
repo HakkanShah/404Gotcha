@@ -1,5 +1,37 @@
 [
   {
+    "id": "2025-08-15T11:41:45.053Z-rux8oh8",
+    "timestamp": "2025-08-15T11:41:45.051Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Unknown",
+    "browser": "Unknown",
+    "device": "Desktop",
+    "userAgent": "node",
+    "referrer": "Direct",
+    "isBot": true,
+    "botReason": "Suspicious user agent."
+  },
+  {
+    "id": "2025-08-15T11:38:48.113Z-j2yjknb",
+    "timestamp": "2025-08-15T11:38:48.109Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Windows",
+    "browser": "Chrome",
+    "device": "Desktop",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "referrer": "https://6000-firebase-studio-1755201230091.cluster-htdgsbmflbdmov5xrjithceibm.cloudworkstations.dev/",
+    "isBot": true,
+    "botReason": "The IP address 127.0.0.1 is a local loopback address, commonly used by bots."
+  },
+  {
     "id": "2025-08-15T11:38:45.519Z-ovjdfqe",
     "timestamp": "2025-08-15T11:38:45.509Z",
     "ip": "127.0.0.1",
