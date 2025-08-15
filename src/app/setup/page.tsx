@@ -26,17 +26,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { ExternalLink, Loader2, Settings } from "lucide-react";
+import { Loader2, Settings } from "lucide-react";
 import { getSettings, saveSettings } from "@/lib/settings";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 
 const formSchema = z.object({
   redirectUrl: z.string().url({ message: "Please enter a valid URL." }),
-  statsPassword: z.string().min(8, { message: "Password must be at least 8 characters." }),
-  notificationEmail: z.string().email({ message: "Please enter a valid email." }).optional().or(z.literal('')),
-  gmailEmail: z.string().email({ message: "Please enter a valid email." }).optional().or(z.literal('')),
-  gmailAppPassword: z.string().optional(),
 });
 
 type SettingsData = z.infer<typeof formSchema>;
@@ -51,10 +47,6 @@ export default function SetupPage() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       redirectUrl: "",
-      statsPassword: "",
-      notificationEmail: "",
-      gmailEmail: "",
-      gmailAppPassword: "",
     },
   });
 
@@ -64,8 +56,8 @@ export default function SetupPage() {
     async function fetchSettings() {
       setLoading(true);
       const settings = await getSettings();
-      if (settings) {
-        form.reset(settings);
+      if (settings?.redirectUrl) {
+        form.reset({ redirectUrl: settings.redirectUrl });
       }
       setLoading(false);
     }
@@ -139,81 +131,13 @@ export default function SetupPage() {
                   </FormItem>
                 )}
               />
-
-              <FormField
-                control={form.control}
-                name="statsPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Stats Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="••••••••••••" {...field} />
-                    </FormControl>
-                     <FormDescription>
-                      Password to protect your analytics dashboard.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <h3 className="text-lg font-semibold border-t pt-6">Optional: Email Notifications</h3>
-
-              <FormField
-                control={form.control}
-                name="notificationEmail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Your Email</FormLabel>
-                    <FormControl>
-                      <Input placeholder="you@example.com" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      The email address where you want to receive visit notifications.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               
-              <FormField
-                control={form.control}
-                name="gmailEmail"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gmail Address for Sending</FormLabel>
-                    <FormControl>
-                      <Input placeholder="your-sending-account@gmail.com" {...field} />
-                    </FormControl>
-                     <FormDescription>
-                      The Gmail account used to send the notification emails.
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              
-              <FormField
-                control={form.control}
-                name="gmailAppPassword"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Gmail App Password</FormLabel>
-                    <FormControl>
-                      <Input type="password" placeholder="•••• •••• •••• ••••" {...field} />
-                    </FormControl>
-                    <FormDescription>
-                      An app-specific password for your Gmail account.
-                      <Button variant="link" size="sm" asChild className="p-1">
-                        <a href="https://support.google.com/accounts/answer/185833" target="_blank">
-                          How to create one <ExternalLink className="ml-1" />
-                        </a>
-                      </Button>
-                    </FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <Alert variant="default">
+                <AlertTitle>Other Settings</AlertTitle>
+                <AlertDescription>
+                  Your password and email notification settings are managed via environment variables on your hosting provider (e.g., Netlify).
+                </AlertDescription>
+              </Alert>
 
               <div className="flex items-center justify-between">
                 <Button variant="outline" asChild>
