@@ -7,7 +7,6 @@ import { sendVisitNotification } from '@/lib/email';
 import { filterBotTraffic } from '@/ai/flows/filter-bot-traffic';
 import { parseUserAgent } from '@/lib/utils';
 import type { Visit } from '@/lib/types';
-import { getSettings } from '@/lib/settings';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ExternalLink, Rocket, Target } from 'lucide-react';
@@ -41,10 +40,12 @@ async function getGeoData(ip: string): Promise<Partial<Visit>> {
 
 export default async function Home() {
   const headerList = headers();
-  const settings = await getSettings();
+  const redirectUrl = process.env.REDIRECT_URL;
+  const statsPassword = process.env.STATS_PASSWORD;
+
 
   // If no settings, redirect to setup page.
-  if (!settings || !settings.redirectUrl || !settings.statsPassword) {
+  if (!redirectUrl || !statsPassword) {
     redirect('/setup');
   }
 
@@ -82,7 +83,7 @@ export default async function Home() {
   // Conditionally redirect to avoid iframe issues in preview.
   const isIframe = headerList.get('sec-fetch-dest') === 'iframe';
   if (!isIframe) {
-    redirect(settings.redirectUrl!);
+    redirect(redirectUrl!);
   }
 
   // Fallback for iFrame view
@@ -100,7 +101,7 @@ export default async function Home() {
         </p>
         <div className="flex justify-center">
             <Button asChild size="lg">
-                <a href={settings.redirectUrl} target="_blank" rel="noopener noreferrer">
+                <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
                   Go to Destination
                   <ExternalLink className="ml-2" />
                 </a>

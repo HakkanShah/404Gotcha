@@ -3,16 +3,14 @@
 
 import nodemailer from 'nodemailer';
 import type { Visit } from './types';
-import { getSettings } from './settings';
 import { headers } from 'next/headers';
 
 export async function sendVisitNotification(visit: Visit) {
-  const settings = await getSettings();
   const headerList = headers();
 
-  const GMAIL_EMAIL = settings?.gmailEmail;
-  const GMAIL_APP_PASSWORD = settings?.gmailAppPassword;
-  const NOTIFICATION_EMAIL = settings?.notificationEmail;
+  const GMAIL_EMAIL = process.env.GMAIL_EMAIL;
+  const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
+  const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL;
   
   // Derive the app URL from request headers for reliability
   const host = headerList.get('host');

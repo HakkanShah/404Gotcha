@@ -3,15 +3,13 @@
 
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
-import { getSettings } from './settings';
 
 const AUTH_COOKIE_NAME = '404gotcha-auth';
 
 // The previousState argument is required for useActionState, but we don't need it.
 export async function loginAction(previousState: any, formData: FormData) {
   const password = formData.get('password') as string;
-  const settings = await getSettings();
-  const storedPassword = settings?.statsPassword;
+  const storedPassword = process.env.STATS_PASSWORD;
 
   if (storedPassword && password === storedPassword) {
     cookies().set(AUTH_COOKIE_NAME, 'true', {

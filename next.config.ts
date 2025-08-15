@@ -19,14 +19,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Make environment variables available to the server-side code
-  env: {
-    REDIRECT_URL: process.env.REDIRECT_URL,
-    STATS_PASSWORD: process.env.STATS_PASSWORD,
-    NOTIFICATION_EMAIL: process.env.NOTIFICATION_EMAIL,
-    GMAIL_EMAIL: process.env.GMAIL_EMAIL,
-    GMAIL_APP_PASSWORD: process.env.GMAIL_APP_PASSWORD,
-  }
 };
 
 export default nextConfig;
