@@ -45,3 +45,21 @@ export async function addVisit(visitData: Omit<Visit, 'id'>): Promise<void> {
     console.error("Error writing to visits file:", error);
   }
 }
+
+export async function deleteVisit(visitId: string): Promise<void> {
+    const visits = await getVisits();
+    const updatedVisits = visits.filter((visit) => visit.id !== visitId);
+    try {
+        await fs.writeFile(visitsFilePath, JSON.stringify(updatedVisits, null, 2));
+    } catch (error) {
+        console.error("Error writing to visits file after deleting a visit:", error);
+    }
+}
+
+export async function clearAllVisits(): Promise<void> {
+    try {
+        await fs.writeFile(visitsFilePath, JSON.stringify([], null, 2));
+    } catch (error) {
+        console.error("Error clearing visits file:", error);
+    }
+}

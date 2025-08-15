@@ -21,8 +21,10 @@ import { columns } from "./columns";
 import LogoutButton from "./logout-button";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon } from "lucide-react";
+import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon, Trash2 } from "lucide-react";
 import StatsSummary from "./stats-summary";
+import DeleteVisitButton from "./delete-visit-button";
+import ClearVisitsButton from "./clear-visits-button";
 
 export const dynamic = 'force-dynamic';
 
@@ -42,6 +44,7 @@ export default async function StatsPage() {
             <p className="text-muted-foreground">Visit Analytics Dashboard</p>
           </div>
           <div className="flex items-center gap-2">
+             <ClearVisitsButton />
             <Button variant="outline" asChild>
               <Link href="/setup">
                 <Settings className="mr-2 h-4 w-4" />
@@ -80,6 +83,7 @@ export default async function StatsPage() {
                         </div>
                       </TableHead>
                     ))}
+                    <TableHead className="w-[50px] text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -124,12 +128,15 @@ export default async function StatsPage() {
                             <Badge variant="secondary">Human</Badge>
                           )}
                         </TableCell>
+                         <TableCell className="text-right">
+                          <DeleteVisitButton visitId={visit.id} />
+                        </TableCell>
                       </TableRow>
                     ))
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={columns.length}
+                        colSpan={columns.length + 1}
                         className="text-center h-24"
                       >
                          <div className="flex flex-col items-center gap-2">
@@ -167,6 +174,7 @@ export default async function StatsPage() {
                               hour12: true,
                             })}
                           </div>
+                          <div className="flex items-center gap-2">
                            {visit.isBot ? (
                             <Badge variant="destructive" title={visit.botReason}>
                               Bot
@@ -174,6 +182,8 @@ export default async function StatsPage() {
                           ) : (
                             <Badge variant="secondary">Human</Badge>
                           )}
+                           <DeleteVisitButton visitId={visit.id} />
+                          </div>
                       </div>
                       <div className="space-y-2 mt-2">
                         <div className="flex items-center text-sm">

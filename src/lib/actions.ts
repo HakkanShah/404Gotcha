@@ -4,6 +4,8 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { settings } from './settings';
+import { clearAllVisits, deleteVisit } from './visits';
+import { revalidatePath } from 'next/cache';
 
 const AUTH_COOKIE_NAME = '404gotcha-auth';
 
@@ -31,4 +33,27 @@ export async function loginAction(previousState: any, formData: FormData) {
 export async function logoutAction() {
   cookies().delete(AUTH_COOKIE_NAME);
   redirect('/login');
+}
+
+export async function deleteVisitAction(visitId: string) {
+    if (!visitId) {
+        return { error: 'Visit ID is required.' };
+    }
+    try {
+        await deleteVisit(visitId);
+        revalidatePath('/stats');
+        return { success: true };
+    } catch (error) {
+        return { error: 'Failed to delete visit.' };
+    }
+}
+
+export async function clearVisitsAction() {
+    try {
+        await clearAllVisits();
+        revalidatePath('/stats');
+        return { success: true };
+    } catch (error) {
+        return { error: 'Failed to clear visits.' };
+    }
 }
