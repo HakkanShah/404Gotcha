@@ -1,3 +1,4 @@
+
 import { getVisits } from "@/lib/visits";
 import {
   Table,
@@ -22,7 +23,6 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Settings, Users, Bot, Target } from "lucide-react";
 import StatsSummary from "./stats-summary";
-import { format } from "date-fns";
 
 export default async function StatsPage() {
   const visits = await getVisits();
@@ -83,7 +83,16 @@ export default async function StatsPage() {
                   visits.map((visit) => (
                     <TableRow key={visit.id}>
                       <TableCell>
-                        {format(new Date(visit.timestamp), "MMM dd, yyyy, h:mm:ss a")}
+                        {new Date(visit.timestamp).toLocaleString("en-IN", {
+                          timeZone: "Asia/Kolkata",
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric',
+                          hour: 'numeric',
+                          minute: '2-digit',
+                          second: '2-digit',
+                          hour12: true,
+                        })}
                       </TableCell>
                       <TableCell>{visit.ip}</TableCell>
                       <TableCell>
