@@ -22,6 +22,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Settings, Users, Bot, Target } from "lucide-react";
 import StatsSummary from "./stats-summary";
+import { format } from "date-fns";
 
 export default async function StatsPage() {
   const visits = await getVisits();
@@ -82,7 +83,7 @@ export default async function StatsPage() {
                   visits.map((visit) => (
                     <TableRow key={visit.id}>
                       <TableCell>
-                        {new Date(visit.timestamp).toLocaleString()}
+                        {format(new Date(visit.timestamp), "MMM dd, yyyy, h:mm:ss a")}
                       </TableCell>
                       <TableCell>{visit.ip}</TableCell>
                       <TableCell>
