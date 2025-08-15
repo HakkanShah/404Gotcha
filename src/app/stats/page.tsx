@@ -24,6 +24,8 @@ import { Button } from "@/components/ui/button";
 import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon } from "lucide-react";
 import StatsSummary from "./stats-summary";
 
+export const dynamic = 'force-dynamic';
+
 export default async function StatsPage() {
   const visits = await getVisits();
 

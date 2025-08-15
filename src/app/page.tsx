@@ -10,6 +10,8 @@ import { Button } from '@/components/ui/button';
 import { ExternalLink, Rocket } from 'lucide-react';
 import { settings } from '@/lib/settings';
 
+export const dynamic = 'force-dynamic';
+
 async function getGeoData(ip: string): Promise<Partial<Visit>> {
   if (ip === '127.0.0.1' || ip === '::1') {
     return {
