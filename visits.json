@@ -1,5 +1,37 @@
 [
   {
+    "id": "2025-08-14T21:39:45.465Z-eh5qtmu",
+    "timestamp": "2025-08-14T21:39:45.462Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Linux",
+    "browser": "Chrome",
+    "device": "Mobile",
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
+    "referrer": "https://6000-firebase-studio-1755201230091.cluster-htdgsbmflbdmov5xrjithceibm.cloudworkstations.dev/capra/?origin=https%3A%2F%2Fstudio.firebase.google.com",
+    "isBot": true,
+    "botReason": "The user agent is a mobile user agent with Chrome version 138, which is unlikely for a real user."
+  },
+  {
+    "id": "2025-08-14T21:39:26.748Z-4ae39d3",
+    "timestamp": "2025-08-14T21:39:26.747Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Linux",
+    "browser": "Chrome",
+    "device": "Mobile",
+    "userAgent": "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Mobile Safari/537.36",
+    "referrer": "https://6000-firebase-studio-1755201230091.cluster-htdgsbmflbdmov5xrjithceibm.cloudworkstations.dev/capra/?origin=https%3A%2F%2Fstudio.firebase.google.com",
+    "isBot": true,
+    "botReason": "The IP address 127.0.0.1 is a localhost address, which is often used for testing or development environments and not typical for genuine user traffic."
+  },
+  {
     "id": "2025-08-14T21:39:17.432Z-yjkylct",
     "timestamp": "2025-08-14T21:39:17.427Z",
     "ip": "127.0.0.1",
