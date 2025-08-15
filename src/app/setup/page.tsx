@@ -12,7 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Loader2, Settings } from "lucide-react";
+import { Loader2, Settings, ExternalLink } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 
@@ -59,13 +59,25 @@ export default function SetupPage() {
           <Alert variant="default">
             <AlertTitle>How to Change Settings</AlertTitle>
             <AlertDescription>
-              To change your Redirect URL, password, or email notification settings, please update the environment variables on your hosting provider (e.g., Netlify) and redeploy your application.
+              To change your Redirect URL, password, or email notification settings, please update the environment variables on your hosting provider (e.g., Netlify) and redeploy your application. You will need to set the following variables:
+              <ul className="list-disc pl-5 mt-2 font-mono text-sm">
+                <li>REDIRECT_URL</li>
+                <li>STATS_PASSWORD</li>
+                <li>GMAIL_EMAIL</li>
+                <li>GMAIL_APP_PASSWORD</li>
+                <li>NOTIFICATION_EMAIL</li>
+              </ul>
             </AlertDescription>
           </Alert>
 
-          <div className="flex items-center justify-start">
-            <Button variant="outline" asChild>
+          <div className="flex items-center justify-start gap-4">
+            <Button variant="default" asChild>
               <Link href="/stats">Go to Stats</Link>
+            </Button>
+            <Button variant="outline" asChild>
+              <a href="https://app.netlify.com" target="_blank" rel="noopener noreferrer">
+                Go to Netlify <ExternalLink className="ml-2" />
+              </a>
             </Button>
           </div>
         </CardContent>

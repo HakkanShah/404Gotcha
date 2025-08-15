@@ -4,20 +4,19 @@
 import nodemailer from 'nodemailer';
 import type { Visit } from './types';
 import { headers } from 'next/headers';
+import { settings } from './settings';
 
 export async function sendVisitNotification(visit: Visit) {
   const headerList = headers();
 
-  const GMAIL_EMAIL = process.env.GMAIL_EMAIL;
-  const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD;
-  const NOTIFICATION_EMAIL = process.env.NOTIFICATION_EMAIL;
-  
+  const { gmailEmail, gmailAppPassword, notificationEmail } = settings;
+
   // Derive the app URL from request headers for reliability
   const host = headerList.get('host');
   const protocol = host?.startsWith('localhost') ? 'http' : 'https';
   const APP_URL = `${protocol}://${host}`;
 
-  if (!GMAIL_EMAIL || !GMAIL_APP_PASSWORD || !NOTIFICATION_EMAIL) {
+  if (!gmailEmail || !gmailAppPassword || !notificationEmail) {
     console.warn('Missing email credentials in settings. Skipping notification.');
     return;
   }
@@ -25,14 +24,14 @@ export async function sendVisitNotification(visit: Visit) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: GMAIL_EMAIL,
-      pass: GMAIL_APP_PASSWORD,
+      user: gmailEmail,
+      pass: gmailAppPassword,
     },
   });
 
   const mailOptions = {
-    from: `"404Gotcha" <${GMAIL_EMAIL}>`,
-    to: NOTIFICATION_EMAIL,
+    from: `"404Gotcha" <${gmailEmail}>`,
+    to: notificationEmail,
     subject: `👀 New Visit on 404Gotcha!`,
     html: `
       <div style="font-family: sans-serif; line-height: 1.6;">

@@ -1,15 +1,14 @@
 
 import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
-import Link from 'next/link';
 import { addVisit } from '@/lib/visits';
 import { sendVisitNotification } from '@/lib/email';
 import { filterBotTraffic } from '@/ai/flows/filter-bot-traffic';
 import { parseUserAgent } from '@/lib/utils';
 import type { Visit } from '@/lib/types';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ExternalLink, Rocket, Target } from 'lucide-react';
+import { ExternalLink, Rocket } from 'lucide-react';
+import { settings } from '@/lib/settings';
 
 async function getGeoData(ip: string): Promise<Partial<Visit>> {
   if (ip === '127.0.0.1' || ip === '::1') {
@@ -40,9 +39,7 @@ async function getGeoData(ip: string): Promise<Partial<Visit>> {
 
 export default async function Home() {
   const headerList = headers();
-  const redirectUrl = process.env.REDIRECT_URL;
-  const statsPassword = process.env.STATS_PASSWORD;
-
+  const { redirectUrl, statsPassword } = settings;
 
   // If no settings, redirect to setup page.
   if (!redirectUrl || !statsPassword) {
