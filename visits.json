@@ -1,5 +1,37 @@
 [
   {
+    "id": "2025-08-15T11:21:08.268Z-x6wgj2p",
+    "timestamp": "2025-08-15T11:21:08.266Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Unknown",
+    "browser": "Unknown",
+    "device": "Desktop",
+    "userAgent": "node",
+    "referrer": "Direct",
+    "isBot": true,
+    "botReason": "Suspicious User Agent."
+  },
+  {
+    "id": "2025-08-15T11:19:23.824Z-dzyf9oh",
+    "timestamp": "2025-08-15T11:19:23.823Z",
+    "ip": "127.0.0.1",
+    "city": "Localhost",
+    "region": "N/A",
+    "country": "N/A",
+    "org": "Local network",
+    "os": "Windows",
+    "browser": "Chrome",
+    "device": "Desktop",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+    "referrer": "https://6000-firebase-studio-1755201230091.cluster-htdgsbmflbdmov5xrjithceibm.cloudworkstations.dev/capra/?origin=https%3A%2F%2Fstudio.firebase.google.com",
+    "isBot": false,
+    "botReason": ""
+  },
+  {
     "id": "2025-08-15T11:07:09.077Z-l9r3tby",
     "timestamp": "2025-08-15T11:07:09.073Z",
     "ip": "127.0.0.1",
