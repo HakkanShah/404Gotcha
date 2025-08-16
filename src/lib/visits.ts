@@ -19,16 +19,23 @@ export async function getVisits(): Promise<Visit[]> {
   let data = '';
   try {
     data = await fs.readFile(visitsFilePath, 'utf-8');
-    // Handle empty file case
-    if (!data) return [];
+    if (!data.trim()) return [];
     return JSON.parse(data);
   } catch (error) {
-    console.error("Error reading or parsing visits file:", error);
-    // If parsing fails, it's likely corrupt. Log it and treat as empty.
-    if (data) { // Only log if there was something to parse
-      console.error("Corrupted visits.json content:", data);
+    if (error instanceof SyntaxError) {
+      console.error("Error parsing visits.json:", error);
+      console.error("Corrupted content:", data);
+      // File is corrupt, back it up and start a new one
+      try {
+        await fs.rename(visitsFilePath, `${visitsFilePath}.corrupt`);
+        await fs.writeFile(visitsFilePath, JSON.stringify([]));
+      } catch (backupError) {
+        console.error("Could not back up corrupted file:", backupError);
+      }
+      return [];
     }
-    return [];
+    console.error("Error reading visits file:", error);
+    return []; // Return empty array for other read errors
   }
 }
 
@@ -44,4 +51,22 @@ export async function addVisit(visitData: Omit<Visit, 'id'>): Promise<void> {
   } catch (error) {
     console.error("Error writing to visits file:", error);
   }
+}
+
+export async function deleteVisit(visitId: string): Promise<void> {
+    const visits = await getVisits();
+    const updatedVisits = visits.filter((visit) => visit.id !== visitId);
+    try {
+        await fs.writeFile(visitsFilePath, JSON.stringify(updatedVisits, null, 2));
+    } catch (error) {
+        console.error("Error writing to visits file after deleting a visit:", error);
+    }
+}
+
+export async function clearAllVisits(): Promise<void> {
+    try {
+        await fs.writeFile(visitsFilePath, JSON.stringify([], null, 2));
+    } catch (error) {
+        console.error("Error clearing visits file:", error);
+    }
 }
