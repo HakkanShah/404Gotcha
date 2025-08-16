@@ -65,6 +65,7 @@ export default async function Home() {
     });
   } catch(e) {
     console.error("Error running bot filter traffic", e)
+    // Default to isBot: true if AI check fails to be safe
     botCheckResult = { isBot: true, reason: "AI check failed" };
   }
 
@@ -79,19 +80,19 @@ export default async function Home() {
     botReason: botCheckResult.reason,
   };
 
-  // Don't wait for these to finish before redirecting
-  addVisit(visit).catch(console.error);
+  // Wait for the visit to be added before doing anything else
+  await addVisit(visit).catch(console.error);
 
   if (!botCheckResult.isBot && settings.isEmailConfigured) {
     sendVisitNotification({ ...visit, id: 'temp' }).catch(console.error);
   }
 
-  // For Vercel preview deployments, we don't want to redirect.
-  if (process.env.VERCEL_ENV !== 'preview') {
+  // In a production Vercel environment, always redirect.
+  if (process.env.VERCEL_ENV === 'production') {
     redirect(settings.redirectUrl!);
   }
 
-  // Fallback for iFrame view or Vercel preview
+  // Fallback for local dev, iFrame view or Vercel preview
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
       <div className="text-center space-y-4">
@@ -102,7 +103,7 @@ export default async function Home() {
           Redirecting...
         </h1>
         <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl">
-          This is a preview. In production, visitors would be redirected to your destination.
+          This is a preview. In a live production environment, visitors would be redirected to your destination URL.
         </p>
         <div className="flex justify-center">
             <Button asChild size="lg">

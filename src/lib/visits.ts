@@ -1,7 +1,14 @@
 
 'use server';
-import { kv } from '@vercel/kv';
+import { createClient } from '@vercel/kv';
 import type { Visit } from './types';
+
+// Ensure KV_URL and KV_REST_API_TOKEN are used for initialization
+const kv = createClient({
+  url: process.env.KV_URL!,
+  token: process.env.KV_REST_API_TOKEN!,
+});
+
 
 const VISITS_KEY = 'visits';
 

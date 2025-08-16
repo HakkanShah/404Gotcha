@@ -9,7 +9,7 @@ export async function sendVisitNotification(visit: Visit) {
   const { gmailEmail, gmailAppPassword, notificationEmail, isEmailConfigured } = settings;
 
   if (!isEmailConfigured) {
-    console.warn('Email credentials are not fully configured in environment variables. Skipping notification.');
+    console.warn('Email credentials are not fully configured. Skipping notification. Please set GMAIL_EMAIL, GMAIL_APP_PASSWORD, and NOTIFICATION_EMAIL in your environment variables.');
     return;
   }
 
