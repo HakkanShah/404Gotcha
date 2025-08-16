@@ -40,33 +40,42 @@ export default function SetupPage() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-2xl">
             <Settings className="text-primary" />
-            Configuration
+            Configuration Required
           </CardTitle>
           <CardDescription>
-            All application settings are now managed via environment variables on your hosting provider.
+            Follow the steps below to finish setting up your application.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-           <Alert className="mb-6">
+           <Alert>
             <AlertTitle>Your Tracking Link</AlertTitle>
             <AlertDescription>
-              Any visit to{' '}
+              Once configured, any visit to{' '}
               <Link href="/" className="font-mono text-primary hover:underline">{appUrl}/</Link> 
-              {' '}will be logged and redirected to the URL you configured in your environment variables.
+              {' '}will be logged and redirected.
             </AlertDescription>
           </Alert>
 
           <Alert variant="default">
-            <AlertTitle>How to Change Settings</AlertTitle>
+            <AlertTitle>Environment Variables Setup</AlertTitle>
             <AlertDescription>
-              To change your Redirect URL, password, or email notification settings, please update the environment variables on Vercel and redeploy your application. You will need to set the following variables:
-              <ul className="list-disc pl-5 mt-2 font-mono text-sm">
-                <li>REDIRECT_URL</li>
-                <li>STATS_PASSWORD</li>
-                <li>GMAIL_EMAIL</li>
-                <li>GMAIL_APP_PASSWORD</li>
-                <li>NOTIFICATION_EMAIL</li>
-              </ul>
+                <p className="mb-4">You must set the following environment variables in your Vercel project settings:</p>
+                
+                <h3 className="font-semibold mt-4">Core Settings:</h3>
+                <ul className="list-disc pl-5 mt-2 font-mono text-sm space-y-1">
+                    <li><span className="font-bold">REDIRECT_URL</span>: The URL to redirect visitors to.</li>
+                    <li><span className="font-bold">STATS_PASSWORD</span>: The password to protect your dashboard.</li>
+                </ul>
+
+                <h3 className="font-semibold mt-4">Email Notification Settings (Optional):</h3>
+                 <ul className="list-disc pl-5 mt-2 font-mono text-sm space-y-1">
+                    <li><span className="font-bold">GMAIL_EMAIL</span>: Your Gmail address for sending notifications.</li>
+                    <li><span className="font-bold">GMAIL_APP_PASSWORD</span>: Your Gmail App Password.</li>
+                    <li><span className="font-bold">NOTIFICATION_EMAIL</span>: The email address to receive notifications.</li>
+                </ul>
+
+                <h3 className="font-semibold mt-4">Vercel KV Storage Settings:</h3>
+                <p className="mt-2 text-sm">First, create a Vercel KV database from your Vercel dashboard and link it to this project. Vercel will automatically add the required `KV_*` environment variables.</p>
             </AlertDescription>
           </Alert>
 

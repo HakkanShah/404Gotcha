@@ -26,6 +26,7 @@ import {
 import { loginAction } from "@/lib/actions";
 import { useToast } from "@/hooks/use-toast";
 import { KeyRound, Loader2 } from "lucide-react";
+import { settings } from "@/lib/settings";
 
 const formSchema = z.object({
   password: z.string().min(1, {
@@ -51,10 +52,22 @@ export default function LoginPage() {
         title: "Login Failed",
         description: state.error,
       });
-      // Reset password field on error to allow re-entry
       form.resetField("password");
     }
   }, [state, toast, form]);
+  
+  if (!settings.statsPassword) {
+     return (
+        <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
+            <Card className="w-full max-w-sm shadow-lg">
+                <CardHeader>
+                    <CardTitle>Configuration Error</CardTitle>
+                    <CardDescription>The STATS_PASSWORD environment variable is not set. Please set it in your Vercel project settings and redeploy.</CardDescription>
+                </CardHeader>
+            </Card>
+        </main>
+     )
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">

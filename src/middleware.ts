@@ -8,18 +8,21 @@ export function middleware(request: NextRequest) {
   const authToken = request.cookies.get(AUTH_COOKIE_NAME)?.value;
   const { pathname } = request.nextUrl;
 
-  const isTryingToAccessStats = pathname.startsWith('/stats');
-  const isTryingToAccessLogin = pathname.startsWith('/login');
+  const isStatsPage = pathname.startsWith('/stats');
+  const isLoginPage = pathname.startsWith('/login');
 
+  // Allow access to the setup page anytime
   if (pathname.startsWith('/setup')) {
     return NextResponse.next();
   }
   
-  if (isTryingToAccessStats && authToken !== 'true') {
+  // If trying to access stats page and not authenticated, redirect to login
+  if (isStatsPage && authToken !== 'true') {
     return NextResponse.redirect(new URL('/login', request.url));
   }
 
-  if (isTryingToAccessLogin && authToken === 'true') {
+  // If on login page but already authenticated, redirect to stats
+  if (isLoginPage && authToken === 'true') {
     return NextResponse.redirect(new URL('/stats', request.url));
   }
 
@@ -27,5 +30,6 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/stats', '/login', '/setup'],
+  // Apply middleware to stats and login pages
+  matcher: ['/stats/:path*', '/login'],
 };

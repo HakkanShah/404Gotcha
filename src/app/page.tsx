@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { addVisit } from '@/lib/visits';
 import { sendVisitNotification } from '@/lib/email';
-import { filterBotTraffic } from '@/ai/flows/filter-bot-traffic';
+import { filterBotTraffic, FilterBotTrafficOutput } from '@/ai/flows/filter-bot-traffic';
 import { parseUserAgent } from '@/lib/utils';
 import type { Visit } from '@/lib/types';
 import { Button } from '@/components/ui/button';
@@ -13,12 +13,13 @@ import { settings } from '@/lib/settings';
 export const dynamic = 'force-dynamic';
 
 async function getGeoData(ip: string): Promise<Partial<Visit>> {
-  if (ip === '127.0.0.1' || ip === '::1') {
+  // Don't fetch geo data for local or private IPs
+  if (ip === '127.0.0.1' || ip === '::1' || ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('172.')) {
     return {
-      city: 'Localhost',
+      city: 'Local',
       region: 'N/A',
       country: 'N/A',
-      org: 'Local network',
+      org: 'Local Network',
     };
   }
   try {
@@ -41,10 +42,9 @@ async function getGeoData(ip: string): Promise<Partial<Visit>> {
 
 export default async function Home() {
   const headerList = headers();
-  const { redirectUrl, statsPassword } = settings;
 
-  // If no settings, redirect to setup page.
-  if (!redirectUrl || !statsPassword) {
+  // If critical settings are missing, redirect to setup page.
+  if (!settings.redirectUrl || !settings.isKvConfigured) {
     redirect('/setup');
   }
 
@@ -54,12 +54,19 @@ export default async function Home() {
   
   const geoData = await getGeoData(ip);
   const deviceData = parseUserAgent(userAgent);
+  
+  let botCheckResult: FilterBotTrafficOutput = { isBot: false, reason: "AI check skipped" };
 
-  const botCheckResult = await filterBotTraffic({
-    userAgent,
-    ipAddress: ip,
-    referrer,
-  });
+  try {
+    botCheckResult = await filterBotTraffic({
+      userAgent,
+      ipAddress: ip,
+      referrer,
+    });
+  } catch(e) {
+    console.error("Error running bot filter traffic", e)
+    botCheckResult = { isBot: true, reason: "AI check failed" };
+  }
 
   const visit: Omit<Visit, 'id'> = {
     timestamp: new Date().toISOString(),
@@ -72,20 +79,19 @@ export default async function Home() {
     botReason: botCheckResult.reason,
   };
 
-  await addVisit(visit);
+  // Don't wait for these to finish before redirecting
+  addVisit(visit).catch(console.error);
 
-  if (!botCheckResult.isBot) {
-    // We don't await this to avoid delaying the redirect
+  if (!botCheckResult.isBot && settings.isEmailConfigured) {
     sendVisitNotification({ ...visit, id: 'temp' }).catch(console.error);
   }
 
-  // Conditionally redirect to avoid iframe issues in preview.
-  const isIframe = headerList.get('sec-fetch-dest') === 'iframe';
-  if (!isIframe) {
-    redirect(redirectUrl!);
+  // For Vercel preview deployments, we don't want to redirect.
+  if (process.env.VERCEL_ENV !== 'preview') {
+    redirect(settings.redirectUrl!);
   }
 
-  // Fallback for iFrame view
+  // Fallback for iFrame view or Vercel preview
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background p-4">
       <div className="text-center space-y-4">
@@ -93,22 +99,19 @@ export default async function Home() {
           <Rocket className="w-full h-full text-primary animate-bounce" />
         </div>
         <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl">
-          Engaging Warp Speed!
+          Redirecting...
         </h1>
         <p className="max-w-[600px] mx-auto text-muted-foreground md:text-xl">
-          You are being redirected to your destination. Please wait a moment.
+          This is a preview. In production, visitors would be redirected to your destination.
         </p>
         <div className="flex justify-center">
             <Button asChild size="lg">
-                <a href={redirectUrl} target="_blank" rel="noopener noreferrer">
+                <a href={settings.redirectUrl} target="_blank" rel="noopener noreferrer">
                   Go to Destination
                   <ExternalLink className="ml-2" />
                 </a>
             </Button>
         </div>
-        <p className="text-sm text-muted-foreground pt-4">
-            If you are not redirected automatically, please click the button above.
-          </p>
       </div>
     </main>
   );

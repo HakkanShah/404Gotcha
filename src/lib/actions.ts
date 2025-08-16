@@ -7,23 +7,24 @@ import { settings } from './settings';
 
 const AUTH_COOKIE_NAME = '404gotcha-auth';
 
-// The previousState argument is required for useActionState, but we don't need it.
 export async function loginAction(previousState: any, formData: FormData) {
   const password = formData.get('password') as string;
-  const storedPassword = settings.statsPassword;
+  const { statsPassword } = settings;
 
-  if (storedPassword && password === storedPassword) {
+  if (!statsPassword) {
+     return { error: 'Password is not set. Please configure STATS_PASSWORD in your environment variables.' };
+  }
+
+  if (password === statsPassword) {
     cookies().set(AUTH_COOKIE_NAME, 'true', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
       path: '/',
       maxAge: 60 * 60 * 24 * 7, // 1 week
     });
     redirect('/stats');
-  } else if (!storedPassword) {
-     return { error: 'Password is not set. Please configure it via environment variables.' };
-  }
-  else {
+  } else {
     return { error: 'Invalid password. Please try again.' };
   }
 }

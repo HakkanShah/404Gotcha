@@ -1,5 +1,5 @@
 
-import { getVisits } from "@/lib/visits";
+import { getVisits, clearVisits } from "@/lib/visits";
 import {
   Table,
   TableBody,
@@ -17,14 +17,53 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { columns } from "./columns";
-import LogoutButton from "./logout-button";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon } from "lucide-react";
+import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon, Trash2 } from "lucide-react";
 import StatsSummary from "./stats-summary";
+import LogoutButton from "./logout-button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
 
 export const dynamic = 'force-dynamic';
+
+async function ClearHistoryButton() {
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive">
+            <Trash2 className="mr-2 h-4 w-4" />
+            Clear History
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will permanently delete all
+            your visit data from the database.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <form action={clearVisits}>
+            <AlertDialogAction type="submit">Continue</AlertDialogAction>
+          </form>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
 
 export default async function StatsPage() {
   const visits = await getVisits();
@@ -59,11 +98,14 @@ export default async function StatsPage() {
         </section>
 
         <Card className="shadow-lg">
-          <CardHeader>
-            <CardTitle>Visit Logs</CardTitle>
-            <CardDescription>
-              Here are the latest visits tracked by your link.
-            </CardDescription>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <div>
+              <CardTitle>Visit Logs</CardTitle>
+              <CardDescription>
+                Here are the latest visits tracked by your link.
+              </CardDescription>
+            </div>
+            <ClearHistoryButton />
           </CardHeader>
           <CardContent>
             {/* Desktop Table View */}
@@ -72,14 +114,12 @@ export default async function StatsPage() {
                 <TableCaption>A list of recent visits.</TableCaption>
                 <TableHeader>
                   <TableRow>
-                    {columns.map((col) => (
-                      <TableHead key={col.id} className={col.className}>
-                        <div className="flex items-center gap-2">
-                          {col.icon}
-                          {col.header}
-                        </div>
-                      </TableHead>
-                    ))}
+                      <TableHead className="w-[200px]">Timestamp</TableHead>
+                      <TableHead className="w-[150px]">IP Address</TableHead>
+                      <TableHead className="w-[180px]">Location</TableHead>
+                      <TableHead className="w-[250px]">Device Info</TableHead>
+                      <TableHead>Referrer</TableHead>
+                      <TableHead className="w-[100px]">Type</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -87,16 +127,7 @@ export default async function StatsPage() {
                     visits.map((visit) => (
                       <TableRow key={visit.id}>
                         <TableCell>
-                          {new Date(visit.timestamp).toLocaleString("en-IN", {
-                            timeZone: "Asia/Kolkata",
-                            year: 'numeric',
-                            month: 'short',
-                            day: 'numeric',
-                            hour: 'numeric',
-                            minute: '2-digit',
-                            second: '2-digit',
-                            hour12: true,
-                          })}
+                          {new Date(visit.timestamp).toLocaleString()}
                         </TableCell>
                         <TableCell>{visit.ip}</TableCell>
                         <TableCell>
@@ -105,12 +136,13 @@ export default async function StatsPage() {
                         <TableCell>
                           {`${visit.device} (${visit.os}, ${visit.browser})`}
                         </TableCell>
-                        <TableCell className="max-w-xs truncate">
+                        <TableCell className="max-w-[200px] truncate">
                           <a
                             href={visit.referrer}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:underline"
+                            title={visit.referrer}
                           >
                             {visit.referrer}
                           </a>
@@ -129,19 +161,12 @@ export default async function StatsPage() {
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={columns.length}
+                        colSpan={6}
                         className="text-center h-24"
                       >
                          <div className="flex flex-col items-center gap-2">
                           <p>No visits yet. Share your link to get started!</p>
-                          <p className="text-sm text-muted-foreground">
-                            Or, finish your{" "}
-                            <Link href="/setup" className="underline text-primary">
-                              configuration
-                            </Link>
-                            .
-                          </p>
-                        </div>
+                         </div>
                       </TableCell>
                     </TableRow>
                   )}
@@ -158,14 +183,7 @@ export default async function StatsPage() {
                       <div className="flex justify-between items-start">
                          <div className="text-sm text-muted-foreground flex items-center">
                            <Calendar size={14} className="mr-2" />
-                           {new Date(visit.timestamp).toLocaleString("en-IN", {
-                              timeZone: "Asia/Kolkata",
-                              month: 'short',
-                              day: 'numeric',
-                              hour: 'numeric',
-                              minute: '2-digit',
-                              hour12: true,
-                            })}
+                           {new Date(visit.timestamp).toLocaleString()}
                           </div>
                            {visit.isBot ? (
                             <Badge variant="destructive" title={visit.botReason}>
@@ -201,12 +219,6 @@ export default async function StatsPage() {
                ) : (
                   <div className="text-center h-24 flex flex-col items-center justify-center gap-2">
                     <p>No visits yet!</p>
-                    <p className="text-sm text-muted-foreground">
-                      Share your link to get started or finish your{' '}
-                      <Link href="/setup" className="underline text-primary">
-                        configuration
-                      </Link>.
-                    </p>
                   </div>
               )}
             </div>
