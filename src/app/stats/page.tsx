@@ -1,5 +1,5 @@
 
-import { getVisits, clearVisits } from "@/lib/visits";
+import { getVisits } from "@/lib/visits";
 import {
   Table,
   TableBody,
@@ -19,52 +19,13 @@ import {
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon, Trash2 } from "lucide-react";
-import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon, Trash2 } from "lucide-react";
+import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon } from "lucide-react";
 import StatsSummary from "./stats-summary";
 import LogoutButton from "./logout-button";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
+import ClearVisitsButton from "./clear-visits-button";
+import DeleteVisitButton from "./delete-visit-button";
 
 export const dynamic = 'force-dynamic';
-
-async function ClearHistoryButton() {
-  return (
-    <AlertDialog>
-      <AlertDialogTrigger asChild>
-        <Button variant="destructive">
-            <Trash2 className="mr-2 h-4 w-4" />
-            Clear History
-        </Button>
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete all
-            your visit data from the database.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <form action={clearVisits}>
-            <AlertDialogAction type="submit">Continue</AlertDialogAction>
-          </form>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
-  );
-}
-
 
 export default async function StatsPage() {
   const visits = await getVisits();
@@ -82,7 +43,6 @@ export default async function StatsPage() {
             <p className="text-muted-foreground">Visit Analytics Dashboard</p>
           </div>
           <div className="flex items-center gap-2">
-             <ClearVisitsButton />
             <Button variant="outline" asChild>
               <Link href="/setup">
                 <Settings className="mr-2 h-4 w-4" />
@@ -107,7 +67,7 @@ export default async function StatsPage() {
                 Here are the latest visits tracked by your link.
               </CardDescription>
             </div>
-            <ClearHistoryButton />
+            <ClearVisitsButton />
           </CardHeader>
           <CardContent>
             {/* Desktop Table View */}
@@ -122,6 +82,7 @@ export default async function StatsPage() {
                       <TableHead className="w-[250px]">Device Info</TableHead>
                       <TableHead>Referrer</TableHead>
                       <TableHead className="w-[100px]">Type</TableHead>
+                      <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -166,7 +127,7 @@ export default async function StatsPage() {
                   ) : (
                     <TableRow>
                       <TableCell
-                        colSpan={6}
+                        colSpan={7}
                         className="text-center h-24"
                       >
                          <div className="flex flex-col items-center gap-2">
@@ -184,12 +145,16 @@ export default async function StatsPage() {
               {visits && visits.length > 0 ? (
                 visits.map((visit) => (
                   <Card key={visit.id} className="w-full">
-                    <CardContent className="pt-4">
-                      <div className="flex justify-between items-start">
-                         <div className="text-sm text-muted-foreground flex items-center">
+                     <CardHeader className="flex flex-row items-center justify-between pb-2">
+                       <div className="text-sm text-muted-foreground flex items-center">
                            <Calendar size={14} className="mr-2" />
                            {new Date(visit.timestamp).toLocaleString()}
-                          </div>
+                        </div>
+                        <DeleteVisitButton visitId={visit.id} />
+                     </CardHeader>
+                    <CardContent className="pt-2">
+                      <div className="flex justify-between items-start mb-4">
+                         
                            {visit.isBot ? (
                             <Badge variant="destructive" title={visit.botReason}>
                               Bot
@@ -230,30 +195,6 @@ export default async function StatsPage() {
 
           </CardContent>
         </Card>
-        
-        <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
-            <AlertDialogContent>
-                <form action={formAction}>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete this
-                      visit from the logs.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter className="mt-4">
-                    <AlertDialogCancel onClick={() => setDialogOpen(false)}>Cancel</AlertDialogCancel>
-                    <AlertDialogAction asChild>
-                        <Button type="submit" variant="destructive" disabled={isPending}>
-                            {isPending ? <Loader2 className="mr-2 animate-spin" /> : <Trash2 />}
-                            Delete
-                        </Button>
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </form>
-            </AlertDialogContent>
-        </AlertDialog>
-
       </div>
     </div>
   );

@@ -2,11 +2,10 @@
 'use server';
 import { kv } from '@vercel/kv';
 import type { Visit } from './types';
-import { revalidatePath } from 'next/cache';
-import { redirect } from 'next/navigation';
 
 const VISITS_KEY = 'visits';
 
+// Get all visits from KV
 export async function getVisits(): Promise<Visit[]> {
   try {
     const visits = await kv.lrange<Visit>(VISITS_KEY, 0, -1);
@@ -17,6 +16,7 @@ export async function getVisits(): Promise<Visit[]> {
   }
 }
 
+// Add a new visit to KV
 export async function addVisit(visitData: Omit<Visit, 'id'>): Promise<void> {
   const newVisit: Visit = {
     id: `${new Date().toISOString()}-${Math.random().toString(36).substring(2, 9)}`,
@@ -29,14 +29,29 @@ export async function addVisit(visitData: Omit<Visit, 'id'>): Promise<void> {
   }
 }
 
+// Delete a single visit by its ID
+export async function deleteVisit(visitId: string) {
+    try {
+        const visits = await getVisits();
+        const visitToDelete = visits.find(v => v.id === visitId);
+        if (visitToDelete) {
+            // LREM removes the first count occurrences of elements equal to value from the list.
+            // By setting count to 1, we remove exactly one occurrence.
+            await kv.lrem(VISITS_KEY, 1, visitToDelete);
+        }
+    } catch (error) {
+        console.error("Error deleting visit from Vercel KV:", error);
+        throw new Error('Failed to delete visit.');
+    }
+}
+
+
+// Clear all visits from KV
 export async function clearVisits() {
     try {
         await kv.del(VISITS_KEY);
-        revalidatePath('/stats');
-        redirect('/stats');
     } catch (error) {
         console.error("Error clearing visits from Vercel KV:", error);
-        // Optionally, return an error message to the client
-        return { error: "Failed to clear visit history." };
+        throw new Error('Failed to clear visit history.');
     }
 }

@@ -4,7 +4,7 @@
 import { redirect } from 'next/navigation';
 import { cookies } from 'next/headers';
 import { settings } from './settings';
-import { clearAllVisits, deleteVisit, getVisits } from './visits';
+import { clearVisits, deleteVisit } from './visits';
 import { revalidatePath } from 'next/cache';
 
 const AUTH_COOKIE_NAME = '404gotcha-auth';
@@ -36,10 +36,6 @@ export async function logoutAction() {
   redirect('/login');
 }
 
-export async function getVisitsAction() {
-  return await getVisits();
-}
-
 export async function deleteVisitAction(visitId: string) {
     if (!visitId) {
         return { error: 'Visit ID is required.' };
@@ -49,16 +45,18 @@ export async function deleteVisitAction(visitId: string) {
         revalidatePath('/stats');
         return { success: true };
     } catch (error) {
-        return { error: 'Failed to delete visit.' };
+        const message = error instanceof Error ? error.message : 'An unknown error occurred';
+        return { error: `Failed to delete visit: ${message}` };
     }
 }
 
 export async function clearVisitsAction() {
     try {
-        await clearAllVisits();
+        await clearVisits();
         revalidatePath('/stats');
         return { success: true };
     } catch (error) {
-        return { error: 'Failed to clear visits.' };
+        const message = error instanceof Error ? error.message : 'An unknown error occurred';
+        return { error: `Failed to clear visits: ${message}` };
     }
 }
