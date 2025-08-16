@@ -20,6 +20,7 @@ import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon, Trash2 } from "lucide-react";
+import { Settings, Users, Bot, Target, Calendar, Hash, MapPin, Laptop, Link as LinkIcon, Trash2 } from "lucide-react";
 import StatsSummary from "./stats-summary";
 import LogoutButton from "./logout-button";
 import {
@@ -81,6 +82,7 @@ export default async function StatsPage() {
             <p className="text-muted-foreground">Visit Analytics Dashboard</p>
           </div>
           <div className="flex items-center gap-2">
+             <ClearVisitsButton />
             <Button variant="outline" asChild>
               <Link href="/setup">
                 <Settings className="mr-2 h-4 w-4" />
@@ -123,7 +125,7 @@ export default async function StatsPage() {
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {visits.length > 0 ? (
+                  {visits && visits.length > 0 ? (
                     visits.map((visit) => (
                       <TableRow key={visit.id}>
                         <TableCell>
@@ -156,6 +158,9 @@ export default async function StatsPage() {
                             <Badge variant="secondary">Human</Badge>
                           )}
                         </TableCell>
+                         <TableCell className="text-right">
+                          <DeleteVisitButton visitId={visit.id} />
+                        </TableCell>
                       </TableRow>
                     ))
                   ) : (
@@ -176,7 +181,7 @@ export default async function StatsPage() {
 
             {/* Mobile Card View */}
             <div className="md:hidden space-y-4">
-              {visits.length > 0 ? (
+              {visits && visits.length > 0 ? (
                 visits.map((visit) => (
                   <Card key={visit.id} className="w-full">
                     <CardContent className="pt-4">
@@ -225,6 +230,30 @@ export default async function StatsPage() {
 
           </CardContent>
         </Card>
+        
+        <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
+            <AlertDialogContent>
+                <form action={formAction}>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete this
+                      visit from the logs.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter className="mt-4">
+                    <AlertDialogCancel onClick={() => setDialogOpen(false)}>Cancel</AlertDialogCancel>
+                    <AlertDialogAction asChild>
+                        <Button type="submit" variant="destructive" disabled={isPending}>
+                            {isPending ? <Loader2 className="mr-2 animate-spin" /> : <Trash2 />}
+                            Delete
+                        </Button>
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </form>
+            </AlertDialogContent>
+        </AlertDialog>
+
       </div>
     </div>
   );
