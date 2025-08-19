@@ -8,7 +8,7 @@ Instant redirect, capture visit details, email notification, and password-protec
 - Optional: set `.env` with SMTP and TARGET_URL
 - `npm start`
 - Tracking: `http://localhost:3000/s`
-- Dashboard: `http://localhost:3000/admin` (user: `admin`, pass: `Hakkan@123`)
+- Dashboard: `http://localhost:3000/admin` (user: `*****`, pass: `**********`)
 
 ## Email setup
 
