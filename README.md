@@ -21,8 +21,8 @@ Set:
 
 - Add environment variables:
   - `TARGET_URL` (default `https://github.com/HakkanShah`)
-  - `ADMIN_USERNAME` (default `admin`)
-  - `ADMIN_PASSWORD` (default `Hakkan@123`)
+  - `ADMIN_USERNAME` 
+  - `ADMIN_PASSWORD` 
   - `LIBSQL_URL` and `LIBSQL_AUTH_TOKEN` (Turso/libSQL)
   - SMTP variables above for email
 - Routes:
