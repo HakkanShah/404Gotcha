@@ -1,0 +1,24 @@
+[build]
+  publish = "public"
+  command = "echo Building..."
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "/s"
+  to = "/.netlify/functions/s"
+  status = 200
+
+[[redirects]]
+  from = "/track"
+  to = "/.netlify/functions/s"
+  status = 200
+
+[[redirects]]
+  from = "/go"
+  to = "/.netlify/functions/s"
+  status = 200
+
+[[redirects]]
+  from = "/admin"
+  to = "/.netlify/functions/admin"
+  status = 200

@@ -1,0 +1,14 @@
+{
+	"rewrites": [
+		{ "source": "/", "destination": "/api/s" },
+		{ "source": "/s", "destination": "/api/s" },
+		{ "source": "/track", "destination": "/api/s" },
+		{ "source": "/go", "destination": "/api/s" },
+		{ "source": "/admin", "destination": "/api/admin" },
+		{ "source": "/login", "destination": "/api/login" },
+		{ "source": "/style.css", "destination": "/api/style-css" },
+		{ "source": "/manifest.json", "destination": "/public/manifest.json" },
+		{ "source": "/service-worker.js", "destination": "/public/service-worker.js" },
+		{ "source": "/icons/:path*", "destination": "/public/icons/:path*" }
+	]
+}

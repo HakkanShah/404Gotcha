@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Link Tracker Dashboard</title>
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="manifest" href="/manifest.json" />
+  
+  <link rel="stylesheet" href="<%= typeof cssPath !== 'undefined' ? cssPath : '/public/style.css' %>" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Link Tracker Dashboard</h1>
+      <p>Target URL: <a href="<%= targetUrl %>" target="_blank" rel="noopener noreferrer"><%= targetUrl %></a></p>
+    </header>
+
+    <section class="cards">
+      <div class="card"><div class="metric"><%= stats.totalVisits %></div><div class="label">Total Visits</div></div>
+      <div class="card"><div class="metric"><%= stats.uniqueVisitors %></div><div class="label">Unique Visitors (by IP)</div></div>
+      <div class="card"><div class="metric"><%= stats.recent24h %></div><div class="label">Visits (Last 24h)</div></div>
+    </section>
+
+    <section class="grid">
+      <div>
+        <h2>Top Referrers</h2>
+        <ul>
+          <% stats.topReferrers.forEach(r => { %>
+            <li><span><%= r.label %></span><span><%= r.c %></span></li>
+          <% }) %>
+        </ul>
+      </div>
+      <div>
+        <h2>Top Browsers</h2>
+        <ul>
+          <% stats.topBrowsers.forEach(r => { %>
+            <li><span><%= r.label %></span><span><%= r.c %></span></li>
+          <% }) %>
+        </ul>
+      </div>
+      <div>
+        <h2>Top Devices</h2>
+        <ul>
+          <% stats.topDevices.forEach(r => { %>
+            <li><span><%= r.label %></span><span><%= r.c %></span></li>
+          <% }) %>
+        </ul>
+      </div>
+      <div>
+        <h2>Top Locations</h2>
+        <ul>
+          <% stats.topLocations.forEach(r => { %>
+            <li><span><%= r.label %></span><span><%= r.c %></span></li>
+          <% }) %>
+        </ul>
+      </div>
+    </section>
+
+    <section>
+      <h2>Recent Visits (IST)</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Time (IST)</th>
+              <th>IP</th>
+              <th>Location</th>
+              <th>Device</th>
+              <th>Browser</th>
+              <th>OS</th>
+              <th>Referrer</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% visits.forEach(v => { %>
+              <tr>
+                <td><%= v.tsIST || v.timestamp %></td>
+                <td><%= v.ip %></td>
+                <td><%= [v.city, v.region, v.country].filter(Boolean).join(', ') %></td>
+                <td><%= v.device_type %></td>
+                <td><%= v.browser %></td>
+                <td><%= v.os %></td>
+                <td class="truncate" title="<%= v.referrer || '' %>"><%= v.referrer || '(direct)' %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <% if (emailLogs && emailLogs.length) { %>
+    <section>
+      <h2>Email Notifications (Recent)</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Time (IST)</th>
+              <th>To</th>
+              <th>Subject</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% emailLogs.forEach(l => { %>
+              <tr>
+                <td><%= l.tsIST || l.timestamp %></td>
+                <td><%= l.to_email %></td>
+                <td class="truncate" title="<%= l.subject || '' %>"><%= l.subject || '' %></td>
+                <td><%= l.success ? 'Sent' : (l.error || 'Failed') %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <% } %>
+
+    <button id="installBtn" class="install-btn" hidden>Install App</button>
+  </div>
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+    });
+  }
+  let deferredPrompt;
+  const installBtn = document.getElementById('installBtn');
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    installBtn.hidden = false;
+  });
+  installBtn?.addEventListener('click', async () => {
+    installBtn.hidden = true;
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    deferredPrompt = null;
+  });
+  </script>
+</body>
+</html>

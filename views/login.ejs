@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login · Link Tracker</title>
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="<%= typeof cssPath !== 'undefined' ? cssPath : '/public/style.css' %>" />
+</head>
+<body>
+  <div class="auth-wrapper">
+    <form class="auth-card" method="post" action="/login">
+      <h1>Admin Login</h1>
+      <% if (typeof error !== 'undefined' && error) { %>
+        <div class="auth-error">Invalid credentials</div>
+      <% } %>
+      <label>
+        <span>Username</span>
+        <input type="text" name="username" autocomplete="username" required />
+      </label>
+      <label>
+        <span>Password</span>
+        <input type="password" name="password" autocomplete="current-password" required />
+      </label>
+      <button type="submit" class="auth-btn">Log in</button>
+    </form>
+  </div>
+
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+    });
+  }
+  </script>
+</body>
+</html>

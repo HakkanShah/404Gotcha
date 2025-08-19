@@ -1,0 +1,14 @@
+{
+	"name": "Link Tracker Dashboard",
+	"short_name": "Tracker",
+	"start_url": "/admin",
+	"scope": "/",
+	"display": "standalone",
+	"theme_color": "#0b1220",
+	"background_color": "#0b1220",
+	"description": "Instant link tracking with analytics dashboard",
+	"icons": [
+		{ "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+		{ "src": "/icons/maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+	]
+}
