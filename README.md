@@ -43,7 +43,7 @@ Set:
 - Local: SQLite via `better-sqlite3` in `data/visits.db`
 - Serverless: Turso/libSQL via `@libsql/client`
 
-## Security notes
+## Security notes 
 
 - Dashboard protected with HTTP Basic Auth, set strong `ADMIN_PASSWORD` in production.
 - App trusts proxy headers for IP. Ensure your platform sets `x-forwarded-for`.
