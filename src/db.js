@@ -126,4 +126,4 @@ export function getAggregatedStats() {
 		topDevices,
 		topLocations
 	};
-} 
+}
