@@ -29,4 +29,4 @@ export function parseCookies(cookieHeader) {
 		if (idx > -1) out[decodeURIComponent(part.slice(0, idx))] = decodeURIComponent(part.slice(idx + 1));
 	}
 	return out;
-}
+} 
